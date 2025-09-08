@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Scorm12API, Scorm2004API } from "scorm-again";
 
 export default function ScormPlayer({ courseId = "aaa", userId = "user-1" }) {
@@ -6,6 +7,8 @@ export default function ScormPlayer({ courseId = "aaa", userId = "user-1" }) {
 
   const scormUrl = "/scorm-content/golf/shared/launchpage.html";
   const manifestUrl = "/scorm-content/golf/imsmanifest.xml";
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     let API;
@@ -33,11 +36,16 @@ export default function ScormPlayer({ courseId = "aaa", userId = "user-1" }) {
             API.loadFromFlattenedJSON(initialData);
           }
 
-          API.on("Initialize", () => console.log("📥 Initialize 2004"));
-          API.on("Terminate", () => console.log("📤 Terminate 2004"));
+          API.on("Initialize", () => console.log("Initialize 2004"));
+          API.on("LMSFinish", () => {
+            console.log("LMSFinish 2004");
+            localStorage.setItem(key, JSON.stringify(API.cmi));
+            navigate(`/`);
+          });
+          API.on("Terminate", () => console.log("Terminate 2004"));
           API.on("SetValue.cmi.*", (CMIElement, value) => {
             console.log("[2004] SetValue:", CMIElement, value);
-            console.log("[1.2] data:", API.cmi);
+            console.log("[2004] data:", API.cmi);
           });
           API.on("Commit", () => {
             console.log("[2004] Commit:", API.cmi);
@@ -51,8 +59,12 @@ export default function ScormPlayer({ courseId = "aaa", userId = "user-1" }) {
             API.loadFromFlattenedJSON(initialData);
           }
 
-          API.on("LMSInitialize", () => console.log("📥 LMSInitialize 1.2"));
-          API.on("LMSFinish", () => console.log("📤 LMSFinish 1.2"));
+          API.on("LMSInitialize", () => console.log("LMSInitialize 1.2"));
+          API.on("LMSFinish", () => {
+            console.log("LMSFinish 1.2");
+            localStorage.setItem(key, JSON.stringify(API.cmi));
+            navigate(`/`);
+          });
           API.on("LMSSetValue.cmi.*", (CMIElement, value) => {
             console.log("[1.2] SetValue:", CMIElement, value);
             console.log("[1.2] data:", API.cmi);
@@ -90,11 +102,9 @@ export default function ScormPlayer({ courseId = "aaa", userId = "user-1" }) {
           allowFullScreen
         ></iframe>
       ) : (
-        // Pesan loading yang lebih baik saat konten sedang disiapkan
-        <div className="w-full h-full flex items-center justify-center bg-gray-800">
-          <p className="text-gray-400 text-lg animate-pulse">
-            Memuat Player SCORM...
-          </p>
+        // Pesan loading yang lebih baik saat konten sedang disiapkan--
+        <div className="w-full h-full flex items-center justify-center">
+          <p className="text-lg animate-pulse">Loading SCORM Player...</p>
         </div>
       )}
     </div>

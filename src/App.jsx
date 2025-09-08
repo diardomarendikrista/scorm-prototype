@@ -1,33 +1,23 @@
 import React from "react";
-import ScormPlayer from "./components/ScormPlayer";
-import CourseSidebar from "./components/CourseSidebar";
-import useScormManifest from "hooks/useScormManifest";
-
-const manifestUrl = "/scorm-content/golf/imsmanifest.xml";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import CourseDetailPage from "./pages/CourseDetailPage";
 
 function App() {
-  const courseData = useScormManifest(manifestUrl);
-
-  console.log(courseData, "data");
-
   return (
-    // Container utama dengan background cerah
-    <div className="bg-slate-100 min-h-screen flex flex-col md:flex-row">
-      {/* Sidebar di Kiri */}
-      {courseData ? (
-        <CourseSidebar courseData={courseData} />
-      ) : (
-        <p>Loading course...</p>
-      )}
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={<HomePage />}
+        />
 
-      {/* Konten Utama (Player SCORM) di Kanan */}
-      <main className="flex-grow p-4 md:p-8 flex items-center justify-center">
-        {/* Wrapper untuk SCORM player: dibuat responsif dengan aspect-ratio */}
-        <div className="w-full h-full max-w-5xl max-h-[720px] bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
-          <ScormPlayer />
-        </div>
-      </main>
-    </div>
+        <Route
+          path="/course/:courseId"
+          element={<CourseDetailPage />}
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

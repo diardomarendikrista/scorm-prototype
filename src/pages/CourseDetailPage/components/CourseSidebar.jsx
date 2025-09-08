@@ -1,4 +1,4 @@
-import useScormProgress from "hooks/useScormProgress";
+import useScormProgress from "pages/CourseDetailPage/hooks/useScormProgress";
 import React, { useState } from "react";
 import {
   FiBookOpen,
