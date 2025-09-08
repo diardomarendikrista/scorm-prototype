@@ -91,7 +91,6 @@ export default function ScormPlayer({ courseId = "aaa", userId = "user-1" }) {
   }, [courseId, userId, manifestUrl]);
 
   return (
-    // Container ini memastikan komponen mengisi ruang yang diberikan oleh parent (App.js)
     <div className="w-full h-full">
       {isApiReady ? (
         // iframe dibuat agar mengisi seluruh container player
@@ -102,7 +101,6 @@ export default function ScormPlayer({ courseId = "aaa", userId = "user-1" }) {
           allowFullScreen
         ></iframe>
       ) : (
-        // Pesan loading yang lebih baik saat konten sedang disiapkan--
         <div className="w-full h-full flex items-center justify-center">
           <p className="text-lg animate-pulse">Loading SCORM Player...</p>
         </div>

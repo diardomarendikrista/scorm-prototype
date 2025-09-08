@@ -1,7 +1,5 @@
-// src/pages/CourseDetailPage.js
-
 import React, { useMemo } from "react";
-import { useParams } from "react-router-dom"; // Hook untuk mengambil parameter URL
+import { useParams } from "react-router-dom";
 
 import ScormPlayer from "./components/ScormPlayer";
 import CourseSidebar from "./components/CourseSidebar";
@@ -9,18 +7,14 @@ import useScormManifest from "./hooks/useScormManifest";
 import useScormProgress from "./hooks/useScormProgress";
 
 export default function CourseDetailPage() {
-  // 1. Ambil courseId dari URL, contoh: "golf" atau "marketing"
   const { courseId } = useParams();
   const userId = "user-1"; // User ID bisa dibuat dinamis nanti
 
-  // 2. Buat URL manifest menjadi dinamis berdasarkan courseId
   const manifestUrl = `/scorm-content/${courseId}/imsmanifest.xml`;
 
-  // Panggil hooks dengan data dinamis
   const manifestData = useScormManifest(manifestUrl);
   const progressData = useScormProgress(courseId, userId);
 
-  // Gabungkan data (logika ini tetap sama)
   const courseDisplayData = useMemo(() => {
     if (!manifestData) return null;
     return {
@@ -33,7 +27,6 @@ export default function CourseDetailPage() {
     };
   }, [manifestData, progressData]);
 
-  // JSX untuk layout halaman detail (sama seperti App.js lama Anda)
   return (
     <div className="bg-slate-100 min-h-screen flex flex-col md:flex-row">
       {courseDisplayData ? (
