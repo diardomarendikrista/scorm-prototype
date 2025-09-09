@@ -1,18 +1,6 @@
+import { courses } from "hardCodeData";
 import React from "react";
 import { Link } from "react-router-dom";
-
-const courses = [
-  {
-    id: "golf",
-    title: "Golf Basics",
-    description: "Learn the fundamentals of playing golf.",
-  },
-  {
-    id: "marketing",
-    title: "Digital Marketing 101",
-    description: "An introduction to the world of digital marketing.",
-  },
-];
 
 export default function HomePage() {
   return (
@@ -27,6 +15,7 @@ export default function HomePage() {
               key={course.id}
               to={`/course/${course.id}`}
               className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow"
+              target="_blank"
             >
               <h2 className="text-2xl font-bold text-blue-600">
                 {course.title}

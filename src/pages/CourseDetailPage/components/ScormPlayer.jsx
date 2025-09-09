@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Scorm12API, Scorm2004API } from "scorm-again";
 
-export default function ScormPlayer({ courseId = "aaa", userId = "user-1" }) {
+export default function ScormPlayer({
+  scormUrl,
+  manifestUrl,
+  courseId = "aaa",
+  userId = "user-1",
+}) {
   const [isApiReady, setIsApiReady] = useState(false);
-
-  const scormUrl = "/scorm-content/golf/shared/launchpage.html";
-  const manifestUrl = "/scorm-content/golf/imsmanifest.xml";
 
   const navigate = useNavigate();
 
@@ -28,7 +30,9 @@ export default function ScormPlayer({ courseId = "aaa", userId = "user-1" }) {
         const key = `scorm-progress-${courseId}-${userId}`;
         const initialData = JSON.parse(localStorage.getItem(key) || "{}");
 
-        if (scormVersion.includes("2004")) {
+        if (scormVersion.includes("2004") || scormVersion.includes("CAM 1.3")) {
+          console.log("masuk ke 2004");
+
           API = new Scorm2004API({ autocommit: true, initialData });
           window.API_1484_11 = API;
 
@@ -37,12 +41,12 @@ export default function ScormPlayer({ courseId = "aaa", userId = "user-1" }) {
           }
 
           API.on("Initialize", () => console.log("Initialize 2004"));
-          API.on("LMSFinish", () => {
-            console.log("LMSFinish 2004");
+          API.on("Terminate", () => {
+            console.log("Terminate 2004");
             localStorage.setItem(key, JSON.stringify(API.cmi));
-            navigate(`/`);
+            window.close();
           });
-          API.on("Terminate", () => console.log("Terminate 2004"));
+
           API.on("SetValue.cmi.*", (CMIElement, value) => {
             console.log("[2004] SetValue:", CMIElement, value);
             console.log("[2004] data:", API.cmi);
@@ -55,6 +59,8 @@ export default function ScormPlayer({ courseId = "aaa", userId = "user-1" }) {
           API = new Scorm12API({ autocommit: true, initialData });
           window.API = API;
 
+          console.log("masuk ke 1.2");
+
           if (initialData) {
             API.loadFromFlattenedJSON(initialData);
           }
@@ -63,8 +69,9 @@ export default function ScormPlayer({ courseId = "aaa", userId = "user-1" }) {
           API.on("LMSFinish", () => {
             console.log("LMSFinish 1.2");
             localStorage.setItem(key, JSON.stringify(API.cmi));
-            navigate(`/`);
+            window.close();
           });
+
           API.on("LMSSetValue.cmi.*", (CMIElement, value) => {
             console.log("[1.2] SetValue:", CMIElement, value);
             console.log("[1.2] data:", API.cmi);
