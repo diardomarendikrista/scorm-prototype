@@ -1,4 +1,4 @@
-const SCORM_CONTENT_BASE_URL = "/scorm-content";
+const SCORM_CONTENT_BASE_URL = "/scorm-proxy/scorm-content";
 
 export const courses = [
   {

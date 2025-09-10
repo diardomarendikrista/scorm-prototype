@@ -13,11 +13,11 @@ export default defineConfig({
     host: "0.0.0.0",
     port: 3000,
     open: true,
-    // WAJIB reverse proxy ke S3 untuk content scorm
+    // WAJIB reverse proxy ke CDN untuk content scorm
     proxy: {
-      "/scorm-content": {
+      "/scorm-proxy": {
         target: "https://dayavirtual-bucket.s3.ap-southeast-1.amazonaws.com",
-        changeOrigin: true, // Wajib ada untuk virtual hosted-style S3 buckets
+        changeOrigin: true,
         rewrite: (path) => path.replace(/^\/scorm-proxy/, ""), // Hapus '/scorm-proxy' dari path
       },
     },
