@@ -1,14 +1,7 @@
-import React, {
-  useEffect,
-  // useMemo,
-  useState,
-} from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import ScormPlayer from "./components/ScormPlayer";
-// import CourseSidebar from "./components/CourseSidebar";
-// import useScormManifest from "./hooks/useScormManifest";
-// import useScormProgress from "./hooks/useScormProgress";
+import ScormPlayer from "./ScormPlayer";
 import { courses } from "hardCodeData";
 
 export default function CourseDetailPage() {
@@ -44,23 +37,6 @@ export default function CourseDetailPage() {
     };
   }, [courseId]);
 
-  // Ambil manifest & progress
-  // const manifestData = useScormManifest(course?.manifestUrl);
-  // const progressData = useScormProgress(courseId, userId);
-
-  // Gabungkan data untuk sidebar
-  // const courseDisplayData = useMemo(() => {
-  //   if (!manifestData) return null;
-  //   return {
-  //     ...manifestData,
-  //     author: course.author || "Learning Team",
-  //     duration: course.duration || 45,
-  //     score: progressData?.score || 0,
-  //     status: progressData?.status?.toUpperCase() || "NOT STARTED",
-  //     location: progressData?.location,
-  //   };
-  // }, [manifestData, progressData, course]);
-
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -79,14 +55,6 @@ export default function CourseDetailPage() {
 
   return (
     <div className="bg-slate-100 min-h-screen flex flex-col md:flex-row">
-      {/* {courseDisplayData ? (
-        <CourseSidebar courseData={courseDisplayData} />
-      ) : (
-        <aside className="w-full md:w-96 flex-shrink-0 bg-white p-6 animate-pulse">
-          <p>Loading course details...</p>
-        </aside>
-      )} */}
-
       <main className="flex-grow flex items-center justify-center">
         <div className="w-full h-full bg-white shadow-lg overflow-hidden ">
           <ScormPlayer
