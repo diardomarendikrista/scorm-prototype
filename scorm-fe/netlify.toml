@@ -1,4 +1,4 @@
-[[rewrites]]
+[[redirects]]
 from = "/scorm-proxy/*"
 to = "https://dayavirtual-bucket.s3.ap-southeast-1.amazonaws.com/:splat"
 status = 200
