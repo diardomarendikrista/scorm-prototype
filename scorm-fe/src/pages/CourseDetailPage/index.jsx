@@ -6,7 +6,7 @@ import { courses } from "hardCodeData";
 
 export default function CourseDetailPage() {
   const { courseId } = useParams();
-  const userId = "user-1"; // TODO: dinamis dari auth
+  const userId = "user-1";
 
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);

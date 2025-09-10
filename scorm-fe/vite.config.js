@@ -18,7 +18,7 @@ export default defineConfig({
       "/scorm-proxy": {
         target: "https://dayavirtual-bucket.s3.ap-southeast-1.amazonaws.com",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/scorm-proxy/, ""), // Hapus '/scorm-proxy' dari path 
+        rewrite: (path) => path.replace(/^\/scorm-proxy/, ""), // Hapus '/scorm-proxy' dari path karena ini kata kunci untuk tentukan proxy
       },
     },
   },

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Scorm12API, Scorm2004API } from "scorm-again";
 
 export default function ScormPlayer({
@@ -9,8 +8,6 @@ export default function ScormPlayer({
   userId = "user-1",
 }) {
   const [isApiReady, setIsApiReady] = useState(false);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     let API;
@@ -100,7 +97,6 @@ export default function ScormPlayer({
   return (
     <div className="w-full h-full">
       {isApiReady ? (
-        // iframe dibuat agar mengisi seluruh container player
         <iframe
           src={scormUrl}
           className="w-full h-full border-0"
