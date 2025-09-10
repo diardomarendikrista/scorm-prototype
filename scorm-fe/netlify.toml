@@ -4,7 +4,6 @@ to = "https://dayavirtual-bucket.s3.ap-southeast-1.amazonaws.com/:splat"
 status = 200
 force = true
 
-# Make sure your SPA fallback comes AFTER the scorm-proxy rule
 [[redirects]]
 from = "/*"
 to = "/index.html"
