@@ -25,9 +25,9 @@ export const courses = [
   },
   {
     id: "iSpring",
-    title: "iSpring Course Example (SCORM 1.2)",
+    title: "iSpring (SCORM 1.2)",
     description:
-      "Course example with all the interactive elements that isEazy Author offers. Find inspiration for the creation of your course!",
+      "iSpring Course",
     scormUrl: `${SCORM_CONTENT_BASE_URL}/iSpring/res/index.html`,
     manifestUrl: `${SCORM_CONTENT_BASE_URL}/iSpring/imsmanifest.xml`,
   },
