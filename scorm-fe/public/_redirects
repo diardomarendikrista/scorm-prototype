@@ -1,2 +1,2 @@
-/google-site-verification* /:splat 200
+/scorm-proxy/* https://dayavirtual-bucket.s3.ap-southeast-1.amazonaws.com/:splat 200
 /* /index.html 200
