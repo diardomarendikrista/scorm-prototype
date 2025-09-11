@@ -1,8 +1,16 @@
-import { courses } from "hardCodeData";
-import React from "react";
+import { API } from "axiosInstance";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function HomePage() {
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    API.get("/api/courses").then((res) => setCourses(res.data));
+  }, []);
+
+  console.log(courses, "courses");
+
   return (
     <div className="bg-slate-100 min-h-screen p-8">
       <div className="max-w-4xl mx-auto">

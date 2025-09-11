@@ -1,0 +1,27 @@
+{
+  "name": "scorm-be",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --ignore uploads/ --ignore temp-extracted/ index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.884.0",
+    "@prisma/client": "^6.15.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "fast-xml-parser": "^5.2.5",
+    "mime-types": "^3.0.1",
+    "multer": "^2.0.2",
+    "unzipper": "^0.12.3"
+  },
+  "devDependencies": {
+    "prisma": "^6.15.0"
+  }
+}

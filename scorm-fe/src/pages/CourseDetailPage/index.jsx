@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
 import ScormPlayer from "./ScormPlayer";
-import { courses } from "hardCodeData";
+import { API } from "axiosInstance";
 
 export default function CourseDetailPage() {
   const { courseId } = useParams();
@@ -10,25 +9,26 @@ export default function CourseDetailPage() {
 
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
 
-    async function fetchCourse() {
+    const fetchCourse = async () => {
+      if (!courseId) return;
+
       try {
         setLoading(true);
-
-        // nanti disini panggil API
-        const data = courses.find((c) => c.id === courseId) || null;
-
-        if (isMounted) setCourse(data);
+        setError(null);
+        const response = await API.get(`/api/courses/${courseId}`);
+        setCourse(response.data);
       } catch (err) {
         console.error(err);
-        if (isMounted) setCourse(null);
+        setError(err.response?.data?.message || "Failed to load the course.");
       } finally {
-        if (isMounted) setLoading(false);
+        setLoading(false);
       }
-    }
+    };
 
     fetchCourse();
 
@@ -41,6 +41,14 @@ export default function CourseDetailPage() {
     return (
       <div className="flex items-center justify-center h-screen">
         <p className="animate-pulse text-slate-500">Loading course...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-100">
+        <p className="text-lg font-semibold text-red-600">Error: {error}</p>
       </div>
     );
   }
