@@ -5,11 +5,11 @@ export default function ScormPlayer({
   manifestUrl,
   courseId,
   userId,
-  needsCustomNav = false, // Prop ini bisa Anda gunakan di JSX nanti
+  needsCustomNav = false,
 }) {
   const [manifestItems, setManifestItems] = useState([]);
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
-  const [scormVersion, setScormVersion] = useState("1.2"); // State baru untuk versi SCORM
+  const [scormVersion, setScormVersion] = useState("1.2");
   const [isLoading, setIsLoading] = useState(true);
 
   const storageKey = "scorm-prototype";
