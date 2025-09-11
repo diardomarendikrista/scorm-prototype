@@ -56,12 +56,14 @@ export default function CourseDetailPage() {
   return (
     <div className="bg-slate-100 min-h-screen flex flex-col md:flex-row">
       <main className="flex-grow flex items-center justify-center">
-        <div className="w-full h-full bg-white shadow-lg overflow-hidden ">
+        <div className="w-screen h-screen bg-white shadow-lg overflow-hidden ">
           <ScormPlayer
             courseId={courseId}
             userId={userId}
             scormUrl={course.scormUrl}
             manifestUrl={course.manifestUrl}
+            needsCustomNav={course.needsCustomNav}
+            needsLmsResume={course.needsLmsResume}
           />
         </div>
       </main>

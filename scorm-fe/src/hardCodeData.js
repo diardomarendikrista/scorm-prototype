@@ -31,20 +31,6 @@ export const courses = [
     manifestUrl: `${SCORM_CONTENT_BASE_URL}/iSpring/imsmanifest.xml`,
   },
   {
-    id: "Furigana-Example",
-    title: "Furigana Example (SCORM 1.2)",
-    description: "Furigana Example Course by eXeLearning",
-    scormUrl: `${SCORM_CONTENT_BASE_URL}/furigana-example/index.html`,
-    manifestUrl: `${SCORM_CONTENT_BASE_URL}/furigana-example/imsmanifest.xml`,
-  },
-  {
-    id: "Furigana-Example-2004",
-    title: "Furigana Example (SCORM 2004)",
-    description: "Furigana Example Course by eXeLearning",
-    scormUrl: `${SCORM_CONTENT_BASE_URL}/furigana-example-2004/index.html`,
-    manifestUrl: `${SCORM_CONTENT_BASE_URL}/furigana-example-2004/imsmanifest.xml`,
-  },
-  {
     id: "Furigana-Example-Xerte",
     title: "Furigana Example (SCORM Xerte)",
     description: "Furigana Example Course by Xerte",
@@ -57,5 +43,14 @@ export const courses = [
     description: "Furigana Example Course by iSpring PRO",
     scormUrl: `${SCORM_CONTENT_BASE_URL}/furigana-ispring/res/index.html`,
     manifestUrl: `${SCORM_CONTENT_BASE_URL}/furigana-ispring/imsmanifest.xml`,
+  },
+  {
+    id: "Furigana-exe",
+    title: "Furigana eXeLearning (SCORM 1.2)",
+    description: "Furigana Exelearning",
+    scormUrl: `${SCORM_CONTENT_BASE_URL}/furigana-exe/index.html`,
+    manifestUrl: `${SCORM_CONTENT_BASE_URL}/furigana-exe/imsmanifest.xml`,
+    needsCustomNav: true,
+    needsLmsResume: true,
   },
 ];
