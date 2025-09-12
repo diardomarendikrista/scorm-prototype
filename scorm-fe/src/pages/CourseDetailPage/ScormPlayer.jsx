@@ -217,6 +217,7 @@ export default function ScormPlayer({
             <button
               onClick={handlePrevious}
               disabled={currentItemIndex === 0}
+              className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
             >
               Previous
             </button>
@@ -227,6 +228,7 @@ export default function ScormPlayer({
             <button
               onClick={handleNext}
               disabled={currentItemIndex >= manifestItems.length - 1}
+              className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
             >
               Next
             </button>
