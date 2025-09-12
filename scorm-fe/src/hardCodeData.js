@@ -50,7 +50,6 @@ export const courses = [
     description: "Furigana Exelearning",
     scormUrl: `${SCORM_CONTENT_BASE_URL}/furigana-exe/index.html`,
     manifestUrl: `${SCORM_CONTENT_BASE_URL}/furigana-exe/imsmanifest.xml`,
-    needsCustomNav: true,
-    needsLmsResume: true,
+    playerBehavior: "LMS_HANDLE_NAVIGATION",
   },
 ];

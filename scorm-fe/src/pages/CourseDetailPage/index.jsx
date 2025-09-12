@@ -60,10 +60,8 @@ export default function CourseDetailPage() {
           <ScormPlayer
             courseId={courseId}
             userId={userId}
-            scormUrl={course.scormUrl}
             manifestUrl={course.manifestUrl}
-            needsCustomNav={course.needsCustomNav}
-            needsLmsResume={course.needsLmsResume}
+            playerBehavior={course?.playerBehavior}
           />
         </div>
       </main>
