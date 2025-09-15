@@ -45,4 +45,11 @@ export const courses = [
     manifestUrl: `${SCORM_CONTENT_BASE_URL}/furigana-exe/imsmanifest.xml`,
     playerBehavior: "LMS_HANDLE_NAVIGATION",
   },
+  {
+    id: "Furigana-exe-2004",
+    title: "Furigana eXeLearning (SCORM 2004)",
+    description: "Furigana Exelearning SCORM 2004",
+    manifestUrl: `${SCORM_CONTENT_BASE_URL}/furigana-exe-2004/imsmanifest.xml`,
+    playerBehavior: "LMS_HANDLE_NAVIGATION",
+  },
 ];

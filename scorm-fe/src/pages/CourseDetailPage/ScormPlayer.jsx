@@ -115,8 +115,7 @@ export default function ScormPlayer({
     let isAttempted = false;
 
     if (scormVersion.includes("2004")) {
-      // Untuk 2004, dianggap sudah dicoba jika statusnya bukan 'not attempted'
-      isAttempted = cmi.completion_status !== "not attempted";
+      isAttempted = cmi?.score?.raw !== "";
     } else {
       // SCORM 1.2
       // Untuk 1.2, dianggap sudah dicoba jika skor sudah terisi
@@ -155,8 +154,7 @@ export default function ScormPlayer({
     // cek apakah ini halaman quiz & sudah passed
     let isQuizAttempted = false;
     if (scormVersion.includes("2004")) {
-      // Dianggap sudah dicoba jika status bukan 'not attempted'
-      isQuizAttempted = cmi.completion_status !== "not attempted";
+      isQuizAttempted = cmi?.score?.raw !== "";
     } else {
       // SCORM 1.2
       // Dianggap sudah dicoba jika skor sudah terisi
@@ -212,19 +210,20 @@ export default function ScormPlayer({
         xml.querySelectorAll("resource[href]").forEach((r) => {
           resources[r.getAttribute("identifier")] = r.getAttribute("href");
         });
-        const items = Array.from(itemNodes).map((n) => {
+        const allItems = Array.from(itemNodes).map((n) => {
           const title = n.querySelector("title")?.textContent || "Untitled";
           return {
             id: n.getAttribute("identifier"),
             title: title,
             href: resources[n.getAttribute("identifierref")],
-            // FLAG untuk halaman quiz
             isQuizPage:
               title.toLowerCase().includes("quiz") ||
               title.toLowerCase().includes("kuis"),
           };
         });
-        setManifestItems(items);
+
+        const launchableItems = allItems.filter((item) => item.href);
+        setManifestItems(launchableItems);
 
         const allData = JSON.parse(localStorage.getItem(storageKey) || "[]");
         const progress = allData.find(
@@ -233,13 +232,13 @@ export default function ScormPlayer({
 
         if (progress) {
           setCurrentProgress(progress);
+          setCurrentItemIndex(
+            Math.min(
+              progress.lastScoIndex || 0,
+              launchableItems.length > 0 ? launchableItems.length - 1 : 0
+            )
+          );
         }
-        setCurrentItemIndex(
-          Math.min(
-            progress?.lastScoIndex || 0,
-            items.length > 0 ? items.length - 1 : 0
-          )
-        );
       } catch (err) {
         console.error("Gagal memuat manifest SCORM:", err);
       } finally {
