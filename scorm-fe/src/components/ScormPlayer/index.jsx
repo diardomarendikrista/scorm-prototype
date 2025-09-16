@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { Scorm12API, Scorm2004API } from "scorm-again";
+import { useCustomAlert } from "hooks/useCustomAlert";
+import QuizScoreDisplay from "./QuizScoreDisplay";
 
 export default function ScormPlayer({
   manifestUrl,
@@ -15,8 +17,11 @@ export default function ScormPlayer({
   const [isLoading, setIsLoading] = useState(true);
   const [isReloading, setIsReloading] = useState(false);
 
+  const iframeRef = useRef(null);
   const API = useRef(null);
   const storageKey = "scorm-prototype";
+
+  const { CustomAlertModal } = useCustomAlert(iframeRef);
 
   // --- Helper Functions ---
   const getBaseUrl = (url) =>
@@ -103,6 +108,15 @@ export default function ScormPlayer({
     scormVersion,
   ]);
 
+  const handleRetryQuiz = useCallback(() => {
+    setIsReloading(true);
+
+    // refresh quiz
+    setTimeout(() => {
+      setIsReloading(false);
+    }, 10);
+  }, []);
+
   const showRetryButton = useMemo(() => {
     // Tombol hanya relevan di mode LMS_HANDLE_NAVIGATION
     if (playerBehavior !== "LMS_HANDLE_NAVIGATION") return false;
@@ -182,14 +196,33 @@ export default function ScormPlayer({
     storageKey,
   ]);
 
-  const handleRetryQuiz = useCallback(() => {
-    setIsReloading(true);
+  const isFinishDisabled = useMemo(() => {
+    const currentItem = manifestItems[currentItemIndex];
 
-    // refresh quiz
-    setTimeout(() => {
-      setIsReloading(false);
-    }, 10);
-  }, []);
+    // Jika halaman terakhir BUKAN kuis, tombol langsung aktif
+    if (!currentItem?.isQuizPage) {
+      return false;
+    }
+
+    // Jika halaman terakhir ADALAH kuis, kita perlu cek apakah sudah dikerjakan
+    const cmi = currentProgress?.cmi || {};
+    let isQuizAttempted = false;
+
+    if (scormVersion.includes("2004")) {
+      // Dianggap sudah dicoba jika status bukan 'not attempted' atau skor ada
+      isQuizAttempted =
+        cmi.completion_status !== "not attempted" ||
+        (cmi.score?.raw !== undefined && cmi.score?.raw !== "");
+    } else {
+      // SCORM 1.2
+      // Dianggap sudah dicoba jika skor sudah terisi
+      const scoreValue = cmi.core?.score?.raw;
+      isQuizAttempted = scoreValue !== undefined && scoreValue !== "";
+    }
+
+    // Tombol Close akan nonaktif jika ini halaman kuis DAN belum dikerjakan
+    return !isQuizAttempted;
+  }, [currentProgress, currentItemIndex, manifestItems, scormVersion]);
 
   // --- EFEK 1: Mengambil & Mem-parsing Manifest ---
   useEffect(() => {
@@ -321,9 +354,12 @@ export default function ScormPlayer({
 
   return (
     <div className="w-full h-full flex flex-col">
+      {CustomAlertModal}
+
       <iframe
+        ref={iframeRef}
         src={isReloading ? "about:blank" : currentItemUrl} // handle untuk retake quiz
-        key={currentItemUrl}
+        key={`${currentItemUrl}-${isReloading}`} // handle untuk retake quiz
         className="flex-grow w-full border-0"
         title="SCORM Content Player"
       ></iframe>
@@ -338,10 +374,23 @@ export default function ScormPlayer({
             >
               Previous
             </button>
-            <span>
-              {manifestItems[currentItemIndex]?.title} ({currentItemIndex + 1} /{" "}
-              {manifestItems.length})
-            </span>
+            <div className="flex-grow text-center px-4 flex flex-col justify-center">
+              {/* Info halaman */}
+              <span className="text-sm truncate leading-tight">
+                {manifestItems[currentItemIndex]?.title} ({currentItemIndex + 1}{" "}
+                / {manifestItems.length})
+              </span>
+
+              {/* Skor hanya tampil di bawahnya jika kuis sudah dikerjakan */}
+              {manifestItems[currentItemIndex]?.isQuizPage && (
+                <div className="text-xs font-semibold text-green-600 leading-tight mt-1">
+                  <QuizScoreDisplay
+                    progress={currentProgress}
+                    scormVersion={scormVersion}
+                  />
+                </div>
+              )}
+            </div>
             <div className="flex gap-2">
               {showRetryButton && (
                 <button
@@ -362,9 +411,10 @@ export default function ScormPlayer({
               ) : (
                 <button
                   onClick={() => window.close()}
-                  className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
+                  disabled={isFinishDisabled}
+                  className="px-4 py-2 bg-green-500 text-white rounded disabled:bg-gray-300"
                 >
-                  Close
+                  Finish
                 </button>
               )}
             </div>

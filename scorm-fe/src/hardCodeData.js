@@ -52,4 +52,11 @@ export const courses = [
     manifestUrl: `${SCORM_CONTENT_BASE_URL}/furigana-exe-2004/imsmanifest.xml`,
     playerBehavior: "LMS_HANDLE_NAVIGATION",
   },
+  {
+    id: "daya-sample-1",
+    title: "Daya Sample 1 (SCORM 1.2)",
+    description: "Daya Sample 1 by eXeLearning , SCORM 1.2",
+    manifestUrl: `${SCORM_CONTENT_BASE_URL}/daya-sample/imsmanifest.xml`,
+    playerBehavior: "LMS_HANDLE_NAVIGATION",
+  },
 ];

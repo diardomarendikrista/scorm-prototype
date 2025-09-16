@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import ScormPlayer from "./ScormPlayer";
 import { courses } from "hardCodeData";
+import ScormPlayer from "components/ScormPlayer";
 
 export default function CourseDetailPage() {
   const { courseId } = useParams();
