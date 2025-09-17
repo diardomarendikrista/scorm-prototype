@@ -44,6 +44,7 @@ export const courses = [
     description: "Furigana Exelearning",
     manifestUrl: `${SCORM_CONTENT_BASE_URL}/furigana-exe/imsmanifest.xml`,
     playerBehavior: "LMS_HANDLE_NAVIGATION",
+    quizPage: 4,
   },
   {
     id: "Furigana-exe-2004",
@@ -51,6 +52,7 @@ export const courses = [
     description: "Furigana Exelearning SCORM 2004",
     manifestUrl: `${SCORM_CONTENT_BASE_URL}/furigana-exe-2004/imsmanifest.xml`,
     playerBehavior: "LMS_HANDLE_NAVIGATION",
+    quizPage: 4,
   },
   {
     id: "daya-sample-1",
@@ -58,5 +60,14 @@ export const courses = [
     description: "Daya Sample 1 by eXeLearning , SCORM 1.2",
     manifestUrl: `${SCORM_CONTENT_BASE_URL}/daya-sample/imsmanifest.xml`,
     playerBehavior: "LMS_HANDLE_NAVIGATION",
+    quizPage: 2,
+  },
+  {
+    id: "daya-sample-2",
+    title: "Daya Sample 2 (SCORM 1.2)",
+    description: "Daya Sample 2 by eXeLearning , SCORM 1.2",
+    manifestUrl: `${SCORM_CONTENT_BASE_URL}/daya-sample-2/imsmanifest.xml`,
+    playerBehavior: "LMS_HANDLE_NAVIGATION",
+    quizPage: false,
   },
 ];

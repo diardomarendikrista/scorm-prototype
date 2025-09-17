@@ -1,26 +1,25 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { Scorm12API, Scorm2004API } from "scorm-again";
 import { useCustomAlert } from "hooks/useCustomAlert";
-import QuizScoreDisplay from "./QuizScoreDisplay";
+import NavigationBar from "./NavigationBar";
 
 export default function ScormPlayer({
   manifestUrl,
   courseId,
   userId,
   playerBehavior = "NORMAL",
+  quizPage = false,
 }) {
   const [manifestItems, setManifestItems] = useState([]);
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
   const [scormVersion, setScormVersion] = useState("1.2");
-
   const [currentProgress, setCurrentProgress] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isReloading, setIsReloading] = useState(false);
 
-  const iframeRef = useRef(null);
   const API = useRef(null);
+  const iframeRef = useRef(null);
   const storageKey = "scorm-prototype";
-
   const { CustomAlertModal } = useCustomAlert(iframeRef);
 
   // --- Helper Functions ---
@@ -36,7 +35,6 @@ export default function ScormPlayer({
     if (!API.current) return;
 
     // 1. Ambil data mentah terbaru dari API dan ubah menjadi objek JSON biasa
-    // Ini menjadi "sumber kebenaran" kita untuk pembaruan kali ini.
     const newCmiData = JSON.parse(JSON.stringify(API.current.cmi));
 
     const allData = JSON.parse(localStorage.getItem(storageKey) || "[]");
@@ -108,122 +106,6 @@ export default function ScormPlayer({
     scormVersion,
   ]);
 
-  const handleRetryQuiz = useCallback(() => {
-    setIsReloading(true);
-
-    // refresh quiz
-    setTimeout(() => {
-      setIsReloading(false);
-    }, 10);
-  }, []);
-
-  const showRetryButton = useMemo(() => {
-    // Tombol hanya relevan di mode LMS_HANDLE_NAVIGATION
-    if (playerBehavior !== "LMS_HANDLE_NAVIGATION") return false;
-
-    const currentItem = manifestItems[currentItemIndex];
-    // Tampilkan hanya jika ini adalah halaman kuis
-    if (!currentItem?.isQuizPage) return false;
-
-    const cmi = currentProgress?.cmi || {};
-    let isAttempted = false;
-
-    if (scormVersion.includes("2004")) {
-      isAttempted = cmi?.score?.raw !== "";
-    } else {
-      // SCORM 1.2
-      // Untuk 1.2, dianggap sudah dicoba jika skor sudah terisi
-      const scoreValue = cmi.core?.score?.raw;
-      isAttempted = scoreValue !== undefined && scoreValue !== "";
-    }
-
-    return isAttempted;
-  }, [
-    currentProgress,
-    currentItemIndex,
-    manifestItems,
-    playerBehavior,
-    scormVersion,
-  ]);
-
-  // --- Navigasi ---
-  const handlePrevious = useCallback(() => {
-    if (currentItemIndex > 0) setCurrentItemIndex((prev) => prev - 1);
-  }, [currentItemIndex]);
-
-  const handleNext = useCallback(() => {
-    if (currentItemIndex < manifestItems.length - 1)
-      setCurrentItemIndex((prev) => prev + 1);
-  }, [currentItemIndex, manifestItems.length]);
-
-  const isNextDisabled = useMemo(() => {
-    if (manifestItems.length === 0) {
-      return currentItemIndex >= manifestItems.length - 1;
-    }
-
-    const currentItem = manifestItems[currentItemIndex];
-
-    const cmi = currentProgress?.cmi || {};
-
-    // cek apakah ini halaman quiz & sudah passed
-    let isQuizAttempted = false;
-    if (scormVersion.includes("2004")) {
-      isQuizAttempted = cmi?.score?.raw !== "";
-    } else {
-      // SCORM 1.2
-      // Dianggap sudah dicoba jika skor sudah terisi
-      const scoreValue = cmi.core?.score?.raw;
-      isQuizAttempted = scoreValue !== undefined && scoreValue !== "";
-    }
-
-    console.log(isQuizAttempted, "isQuizAttempted");
-    console.log(currentItem?.isQuizPage, "currentItem?.isQuizPage");
-    console.log(cmi?.core, "cmi");
-
-    // Syarat next disabled
-    return (
-      currentItemIndex >= manifestItems.length - 1 ||
-      (currentItem?.isQuizPage && !isQuizAttempted)
-    );
-  }, [
-    currentProgress,
-    currentItemIndex,
-    manifestItems,
-    playerBehavior,
-    scormVersion,
-    courseId,
-    userId,
-    storageKey,
-  ]);
-
-  const isFinishDisabled = useMemo(() => {
-    const currentItem = manifestItems[currentItemIndex];
-
-    // Jika halaman terakhir BUKAN kuis, tombol langsung aktif
-    if (!currentItem?.isQuizPage) {
-      return false;
-    }
-
-    // Jika halaman terakhir ADALAH kuis, kita perlu cek apakah sudah dikerjakan
-    const cmi = currentProgress?.cmi || {};
-    let isQuizAttempted = false;
-
-    if (scormVersion.includes("2004")) {
-      // Dianggap sudah dicoba jika status bukan 'not attempted' atau skor ada
-      isQuizAttempted =
-        cmi.completion_status !== "not attempted" ||
-        (cmi.score?.raw !== undefined && cmi.score?.raw !== "");
-    } else {
-      // SCORM 1.2
-      // Dianggap sudah dicoba jika skor sudah terisi
-      const scoreValue = cmi.core?.score?.raw;
-      isQuizAttempted = scoreValue !== undefined && scoreValue !== "";
-    }
-
-    // Tombol Close akan nonaktif jika ini halaman kuis DAN belum dikerjakan
-    return !isQuizAttempted;
-  }, [currentProgress, currentItemIndex, manifestItems, scormVersion]);
-
   // --- EFEK 1: Mengambil & Mem-parsing Manifest ---
   useEffect(() => {
     if (!manifestUrl) return;
@@ -243,15 +125,13 @@ export default function ScormPlayer({
         xml.querySelectorAll("resource[href]").forEach((r) => {
           resources[r.getAttribute("identifier")] = r.getAttribute("href");
         });
-        const allItems = Array.from(itemNodes).map((n) => {
+        const allItems = Array.from(itemNodes).map((n, index) => {
           const title = n.querySelector("title")?.textContent || "Untitled";
           return {
             id: n.getAttribute("identifier"),
             title: title,
             href: resources[n.getAttribute("identifierref")],
-            isQuizPage:
-              title.toLowerCase().includes("quiz") ||
-              title.toLowerCase().includes("kuis"),
+            isQuizPage: index === quizPage - 1,
           };
         });
 
@@ -279,7 +159,7 @@ export default function ScormPlayer({
       }
     };
     fetchManifest();
-  }, [manifestUrl, courseId, userId, storageKey]);
+  }, [manifestUrl, courseId, userId, storageKey, quizPage]);
 
   // --- EFEK 2: Mengelola Sesi API untuk SETIAP SCO ---
   useEffect(() => {
@@ -366,59 +246,17 @@ export default function ScormPlayer({
 
       {playerBehavior === "LMS_HANDLE_NAVIGATION" &&
         manifestItems.length > 1 && (
-          <div className="flex-shrink-0 bg-gray-100 p-2 flex justify-between items-center border-t">
-            <button
-              onClick={handlePrevious}
-              disabled={currentItemIndex === 0}
-              className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
-            >
-              Previous
-            </button>
-            <div className="flex-grow text-center px-4 flex flex-col justify-center">
-              {/* Info halaman */}
-              <span className="text-sm truncate leading-tight">
-                {manifestItems[currentItemIndex]?.title} ({currentItemIndex + 1}{" "}
-                / {manifestItems.length})
-              </span>
-
-              {/* Skor hanya tampil di bawahnya jika kuis sudah dikerjakan */}
-              {manifestItems[currentItemIndex]?.isQuizPage && (
-                <div className="text-xs font-semibold text-green-600 leading-tight mt-1">
-                  <QuizScoreDisplay
-                    progress={currentProgress}
-                    scormVersion={scormVersion}
-                  />
-                </div>
-              )}
-            </div>
-            <div className="flex gap-2">
-              {showRetryButton && (
-                <button
-                  onClick={handleRetryQuiz}
-                  className="px-4 py-2 bg-yellow-500 text-white rounded"
-                >
-                  Reset Quiz
-                </button>
-              )}
-              {currentItemIndex < manifestItems.length - 1 ? (
-                <button
-                  onClick={handleNext}
-                  disabled={isNextDisabled}
-                  className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
-                >
-                  Next
-                </button>
-              ) : (
-                <button
-                  onClick={() => window.close()}
-                  disabled={isFinishDisabled}
-                  className="px-4 py-2 bg-green-500 text-white rounded disabled:bg-gray-300"
-                >
-                  Finish
-                </button>
-              )}
-            </div>
-          </div>
+          <NavigationBar
+            courseId={courseId}
+            userId={userId}
+            manifestItems={manifestItems}
+            currentItemIndex={currentItemIndex}
+            setCurrentItemIndex={setCurrentItemIndex}
+            currentProgress={currentProgress}
+            setIsReloading={setIsReloading}
+            playerBehavior={playerBehavior}
+            scormVersion={scormVersion}
+          />
         )}
     </div>
   );

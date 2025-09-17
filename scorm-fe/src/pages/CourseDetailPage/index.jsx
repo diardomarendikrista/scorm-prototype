@@ -62,6 +62,7 @@ export default function CourseDetailPage() {
             userId={userId}
             manifestUrl={course.manifestUrl}
             playerBehavior={course?.playerBehavior}
+            quizPage={course?.quizPage}
           />
         </div>
       </main>
