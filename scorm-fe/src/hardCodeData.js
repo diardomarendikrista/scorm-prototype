@@ -45,6 +45,8 @@ export const courses = [
     manifestUrl: `${SCORM_CONTENT_BASE_URL}/furigana-exe/imsmanifest.xml`,
     playerBehavior: "LMS_HANDLE_NAVIGATION",
     quizPage: 4,
+    maxQuizAttempt: 2,
+    quizAttempt: 0,
   },
   {
     id: "Furigana-exe-2004",
@@ -52,7 +54,9 @@ export const courses = [
     description: "Furigana Exelearning SCORM 2004",
     manifestUrl: `${SCORM_CONTENT_BASE_URL}/furigana-exe-2004/imsmanifest.xml`,
     playerBehavior: "LMS_HANDLE_NAVIGATION",
-    quizPage: 4,
+    quizPage: 5,
+    maxQuizAttempt: 0,
+    quizAttempt: 0,
   },
   {
     id: "daya-sample-1",

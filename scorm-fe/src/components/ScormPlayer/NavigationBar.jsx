@@ -1,14 +1,16 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import QuizScoreDisplay from "./QuizScoreDisplay";
-import { cn } from "lib/utils";
 import {
   RiArrowLeftSLine,
   RiArrowRightSLine,
   RiRestartLine,
   RiFlagLine,
 } from "react-icons/ri";
+import { cn } from "lib/utils";
 
 export default function NavigationBar({
+  courseId,
+  userId,
   manifestItems,
   currentItemIndex,
   setCurrentItemIndex,
@@ -16,7 +18,12 @@ export default function NavigationBar({
   setIsReloading,
   playerBehavior,
   scormVersion,
+  quizAttempt,
+  maxQuizAttempt,
 }) {
+  const [isRetryDisabled, setIsRetryDisabled] = useState(false);
+  const storageKey = "scorm-prototype";
+
   // --- Navigasi ---
   const handlePrevious = useCallback(() => {
     if (currentItemIndex > 0) setCurrentItemIndex((prev) => prev - 1);
@@ -27,14 +34,55 @@ export default function NavigationBar({
       setCurrentItemIndex((prev) => prev + 1);
   }, [currentItemIndex, manifestItems.length]);
 
+  // masih buggy, nanti dicek lagi
   const handleRetryQuiz = useCallback(() => {
-    setIsReloading(true);
+    // Check if max attempts reached
+    // const currentAttempts = currentProgress?.quizAttempt || 0;
+    // if (maxQuizAttempt > 0 && currentAttempts >= maxQuizAttempt) {
+    //   alert(`Maximum quiz attempts (${maxQuizAttempt}) reached!`);
+    //   return;
+    // }
 
-    // refresh quiz
+    // // Disable button for 3 seconds
+    // setIsRetryDisabled(true);
+
+    // // Increment quiz attempt in localStorage
+    // try {
+    //   const allData = JSON.parse(localStorage.getItem(storageKey) || "[]");
+    //   const progressIndex = allData.findIndex(
+    //     (item) => item.courseId === courseId && item.userId === userId
+    //   );
+
+    //   if (progressIndex > -1) {
+    //     // Increment the quiz attempt
+    //     allData[progressIndex] = {
+    //       ...allData[progressIndex],
+    //       quizAttempt: (allData[progressIndex].quizAttempt || 0) + 1,
+    //       isRetaking: true, // Flag to indicate this is a retake
+    //     };
+
+    //     console.log(allData[progressIndex], "allData[progressIndex]");
+
+    //     localStorage.setItem(storageKey, JSON.stringify(allData));
+    //     console.log(
+    //       `Quiz attempt incremented to: ${allData[progressIndex].quizAttempt}`
+    //     );
+    //   }
+    // } catch (error) {
+    //   console.error("Failed to update quiz attempt:", error);
+    // }
+
+    // Trigger iframe reload
+    setIsReloading(true);
     setTimeout(() => {
       setIsReloading(false);
     }, 10);
-  }, []);
+
+    // Re-enable button after 3 seconds
+    setTimeout(() => {
+      setIsRetryDisabled(false);
+    }, 3000);
+  }, [courseId, userId, currentProgress, maxQuizAttempt, setIsReloading]);
 
   // --- flags logic ---
   const isNextDisabled = useMemo(() => {
@@ -134,7 +182,16 @@ export default function NavigationBar({
   const progressPercent = ((currentItemIndex + 1) / manifestItems.length) * 100;
 
   return (
-    <div className="flex-shrink-0 bg-slate-100 p-3 flex justify-between items-center shadow-[0_-5px_15px_-5px_rgba(0,0,0,0.1)]">
+    <div className="flex-shrink-0 bg-slate-100 p-3 flex justify-between items-center shadow-[0_-5px_15px_-5px_rgba(0,0,0,0.1)] relative">
+      <div className="mt-1.5 w-full absolute bottom-0 left-0">
+        <div className="w-full bg-slate-300 rounded-full h-1.5">
+          <div
+            className="bg-blue-600 h-1.5 rounded-full transition-all duration-500"
+            style={{ width: `${progressPercent}%` }}
+          ></div>
+        </div>
+      </div>
+
       <button
         onClick={handlePrevious}
         disabled={currentItemIndex === 0}
@@ -144,33 +201,26 @@ export default function NavigationBar({
         <span className="hidden md:inline">Previous</span>
       </button>
 
-      {/* <div className="flex-grow text-center px-4 flex flex-col justify-center w-1/3">
+      <div className="text-center flex flex-col justify-center absolute left-1/2 transform -translate-x-1/2">
         <span className="text-sm font-semibold text-slate-800 truncate">
-          {manifestItems[currentItemIndex]?.title}
+          {manifestItems[currentItemIndex]?.title}{" "}
+          {manifestItems[currentItemIndex]?.isQuizPage &&
+            maxQuizAttempt !== 0 && (
+              <span className="text-xs">
+                - {currentProgress.quizAttempt || quizAttempt}/{maxQuizAttempt}{" "}
+                Attemps
+              </span>
+            )}
+          {/* {manifestItems[currentItemIndex]?.title} ({currentItemIndex + 1} /{" "}
+          {manifestItems.length}) */}
         </span>
-        <div className="mt-1.5">
-          <div className="w-full bg-slate-300 rounded-full h-1.5">
-            <div
-              className="bg-blue-600 h-1.5 rounded-full transition-all duration-500"
-              style={{ width: `${progressPercent}%` }}
-            ></div>
-          </div>
-        </div>
-      </div> */}
-
-      <div className="flex-grow text-center px-4 flex flex-col justify-center">
-        {/* Info halaman */}
-        <span className="text-sm truncate leading-tight">
-          {manifestItems[currentItemIndex]?.title} ({currentItemIndex + 1} /{" "}
-          {manifestItems.length})
-        </span>
-
-        {/* Skor hanya tampil di bawahnya jika kuis sudah dikerjakan */}
         {manifestItems[currentItemIndex]?.isQuizPage && (
           <div className="text-xs font-semibold text-green-600 leading-tight mt-1">
             <QuizScoreDisplay
               progress={currentProgress}
               scormVersion={scormVersion}
+              quizAttemp={quizAttempt}
+              maxQuizAttempt={maxQuizAttempt}
             />
           </div>
         )}
@@ -180,7 +230,14 @@ export default function NavigationBar({
         {showRetryButton && (
           <button
             onClick={handleRetryQuiz}
-            className="flex items-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded-full shadow-sm hover:bg-yellow-600 transition-colors"
+            className={cn(
+              "flex items-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded-full shadow-sm hover:bg-yellow-600 transition-colors",
+              {
+                "opacity-50 cursor-not-allowed hover:bg-yellow-500 !cursor-not-allowed":
+                  isRetryDisabled,
+              }
+            )}
+            disabled={isRetryDisabled}
           >
             <RiRestartLine className="w-5 h-5" />
             <span className="hidden md:inline">Retry Quiz</span>

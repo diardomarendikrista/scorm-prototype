@@ -9,6 +9,8 @@ export default function ScormPlayer({
   userId,
   playerBehavior = "NORMAL",
   quizPage = false,
+  maxQuizAttempt = 0,
+  quizAttempt = 0,
 }) {
   const [manifestItems, setManifestItems] = useState([]);
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
@@ -31,10 +33,22 @@ export default function ScormPlayer({
       ? `${baseUrl}${manifestItems[currentItemIndex].href}`
       : "";
 
+  const hasScoreBeenSubmitted = (cmiData) => {
+    // scorm2004
+    if (scormVersion.includes("2004")) {
+      return cmiData?.score?.raw !== "";
+    } else {
+      // SCORM 1.2
+      // Dianggap sudah dicoba jika skor sudah terisi
+      const scoreValue = cmiData.core?.score?.raw;
+      return scoreValue !== undefined && scoreValue !== "";
+    }
+  };
+
   const saveProgress = useCallback(() => {
     if (!API.current) return;
 
-    // 1. Ambil data mentah terbaru dari API dan ubah menjadi objek JSON biasa
+    // Ambil data mentah terbaru dari API dan ubah menjadi objek JSON biasa
     const newCmiData = JSON.parse(JSON.stringify(API.current.cmi));
 
     const allData = JSON.parse(localStorage.getItem(storageKey) || "[]");
@@ -44,20 +58,31 @@ export default function ScormPlayer({
     const progress = progressIndex > -1 ? allData[progressIndex] : null;
     const existingCmi = progress ? progress.cmi : {};
 
-    // 2. Gabungkan objek JSON lama dengan objek JSON baru. Semuanya konsisten.
+    // Gabungkan objek JSON lama dengan objek JSON baru. Semuanya konsisten.
     const mergedCmi = {
       ...existingCmi,
       ...newCmiData,
       core: { ...(existingCmi.core || {}), ...(newCmiData.core || {}) },
     };
 
-    // 3. Hitung status keseluruhan menggunakan format data yang sudah konsisten
     let overallStatus = progress?.overallStatus || "incomplete";
+    let currentAttempt = progress?.quizAttempt || 0;
 
     if (playerBehavior === "LMS_HANDLE_NAVIGATION") {
+      // handle quizAttemp
+      const currentItem = manifestItems[currentItemIndex];
+      if (currentItem?.isQuizPage) {
+        const hasNewScore = hasScoreBeenSubmitted(newCmiData);
+        const hadPreviousScore = hasScoreBeenSubmitted(currentProgress.cmi);
+        if (hasNewScore && !hadPreviousScore) {
+          currentAttempt = 1;
+          console.log(`Quiz attempt incremented to: ${currentAttempt}`);
+        }
+      }
+
+      // handle overAllStatus
       const isLastSco = currentItemIndex === manifestItems.length - 1;
 
-      // Sekarang kita membaca dari `newCmiData` yang sudah pasti formatnya
       let newRawStatus;
       if (scormVersion.includes("2004")) {
         newRawStatus =
@@ -86,16 +111,18 @@ export default function ScormPlayer({
       cmi: mergedCmi,
       lastScoIndex: currentItemIndex,
       overallStatus: overallStatus,
+      maxQuizAttempt: maxQuizAttempt,
+      quizAttempt: currentAttempt,
     };
 
-    // 4. Simpan objek yang sudah konsisten ke localStorage dan state
+    // Simpan objek yang sudah konsisten ke localStorage dan state
     if (progressIndex > -1) {
       allData[progressIndex] = finalProgress;
     } else {
       allData.push(finalProgress);
     }
     localStorage.setItem(storageKey, JSON.stringify(allData));
-    setCurrentProgress(finalProgress); // State `currentProgress` sekarang juga konsisten
+    setCurrentProgress(finalProgress);
   }, [
     courseId,
     userId,
@@ -256,6 +283,8 @@ export default function ScormPlayer({
             setIsReloading={setIsReloading}
             playerBehavior={playerBehavior}
             scormVersion={scormVersion}
+            quizAttempt={quizAttempt}
+            maxQuizAttempt={maxQuizAttempt}
           />
         )}
     </div>
