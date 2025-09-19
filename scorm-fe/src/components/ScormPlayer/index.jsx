@@ -1,7 +1,9 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { Scorm12API, Scorm2004API } from "scorm-again";
 import { useCustomAlert } from "hooks/useCustomAlert";
+import { cn } from "lib/utils";
 import NavigationBar from "./NavigationBar";
+import QuizResultPage from "./QuizResultPage";
 
 export default function ScormPlayer({
   manifestUrl,
@@ -9,7 +11,7 @@ export default function ScormPlayer({
   userId,
   playerBehavior = "NORMAL",
   quizPage = false,
-  maxQuizAttempt = 0,
+  isQuizRepeatable = true,
   quizAttempt = 0,
 }) {
   const [manifestItems, setManifestItems] = useState([]);
@@ -45,6 +47,27 @@ export default function ScormPlayer({
     }
   };
 
+  const quizAttemptsExhausted = useMemo(() => {
+    // Fitur ini hanya relevan di mode LMS_HANDLE_NAVIGATION
+    if (playerBehavior !== "LMS_HANDLE_NAVIGATION") return false;
+
+    const currentItem = manifestItems[currentItemIndex];
+    // Cek apakah ini halaman kuis
+    if (!currentItem?.isQuizPage) return false;
+
+    // Ambil jumlah percobaan yang sudah dilakukan
+    const attemptsTaken = currentProgress?.quizAttempt || 0;
+
+    // Cek apakah maxQuizAttempt lebih dari 0 dan isQuizRepeatable false
+    return !isQuizRepeatable && attemptsTaken > 0;
+  }, [
+    currentProgress,
+    currentItemIndex,
+    manifestItems,
+    playerBehavior,
+    isQuizRepeatable,
+  ]);
+
   const saveProgress = useCallback(() => {
     if (!API.current) return;
 
@@ -76,7 +99,7 @@ export default function ScormPlayer({
         const hadPreviousScore = hasScoreBeenSubmitted(currentProgress.cmi);
         if (hasNewScore && !hadPreviousScore) {
           currentAttempt = 1;
-          console.log(`Quiz attempt incremented to: ${currentAttempt}`);
+          // console.log(`Quiz attempt incremented to: ${currentAttempt}`);
         }
       }
 
@@ -89,7 +112,8 @@ export default function ScormPlayer({
           newCmiData.completion_status || newCmiData.success_status;
       } else {
         // Karena `newCmiData` adalah hasil stringify, ia PASTI punya `_lesson_status` jika ada
-        newRawStatus = newCmiData.core?._lesson_status;
+        newRawStatus =
+          newCmiData.core?._lesson_status || newCmiData.core?.lesson_status;
       }
 
       if (
@@ -111,7 +135,7 @@ export default function ScormPlayer({
       cmi: mergedCmi,
       lastScoIndex: currentItemIndex,
       overallStatus: overallStatus,
-      maxQuizAttempt: maxQuizAttempt,
+      isQuizRepeatable: isQuizRepeatable,
       quizAttempt: currentAttempt,
     };
 
@@ -217,11 +241,11 @@ export default function ScormPlayer({
     }
 
     const onCommit = () => {
-      console.log("Commit triggered:", API.current.cmi);
+      // console.log("Commit triggered:", API.current.cmi);
       saveProgress();
     };
     const onTerminate = () => {
-      console.log("Terminate/Finish triggered:", API.current.cmi);
+      // console.log("Terminate/Finish triggered:", API.current.cmi);
       saveProgress();
       if (playerBehavior === "NORMAL" || manifestItems.length <= 1) {
         window.close();
@@ -234,7 +258,7 @@ export default function ScormPlayer({
     API.current.on("LMSFinish", onTerminate);
 
     return () => {
-      console.log(`Membersihkan API untuk SCO ${currentItemIndex}`);
+      // console.log(`Membersihkan API untuk SCO ${currentItemIndex}`);
       delete window.API;
       delete window.API_1484_11;
     };
@@ -263,11 +287,19 @@ export default function ScormPlayer({
     <div className="w-full h-full flex flex-col">
       {CustomAlertModal}
 
+      {quizAttemptsExhausted && (
+        <QuizResultPage
+          progress={currentProgress}
+          scormVersion={scormVersion}
+        />
+      )}
       <iframe
         ref={iframeRef}
         src={isReloading ? "about:blank" : currentItemUrl} // handle untuk retake quiz
         key={`${currentItemUrl}-${isReloading}`} // handle untuk retake quiz
-        className="flex-grow w-full border-0"
+        className={cn("flex-grow w-full border-0", {
+          hidden: quizAttemptsExhausted,
+        })}
         title="SCORM Content Player"
       ></iframe>
 
@@ -284,7 +316,7 @@ export default function ScormPlayer({
             playerBehavior={playerBehavior}
             scormVersion={scormVersion}
             quizAttempt={quizAttempt}
-            maxQuizAttempt={maxQuizAttempt}
+            isQuizRepeatable={isQuizRepeatable}
           />
         )}
     </div>

@@ -63,7 +63,7 @@ export default function CourseDetailPage() {
             manifestUrl={course.manifestUrl}
             playerBehavior={course?.playerBehavior}
             quizPage={course?.quizPage}
-            maxQuizAttempt={course?.maxQuizAttempt}
+            isQuizRepeatable={course?.isQuizRepeatable}
             quizAttempt={course?.quizAttempt}
           />
         </div>

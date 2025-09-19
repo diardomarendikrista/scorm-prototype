@@ -7,10 +7,14 @@ export default function ({ progress, scormVersion }) {
 
   if (scormVersion.includes("2004")) {
     score = cmi.score?.scaled; // Skor 2004 biasanya dalam bentuk skala 0-1
+    console.log(score, "SKOR");
+
     // Untuk mendapatkan skor mentah, kita kalikan 100
-    if (score !== undefined) {
+    if (score !== undefined && score !== null && score !== "") {
       score = parseFloat(score) * 100;
       maxScore = 100;
+    } else {
+      score = "-";
     }
   } else {
     // SCORM 1.2
@@ -25,7 +29,7 @@ export default function ({ progress, scormVersion }) {
 
   return (
     <div className="text-sm font-semibold text-gray-700">
-      Your Score: {score} / {maxScore || 100}
+      Your Score: {score || 0} / {maxScore || 100}
     </div>
   );
 }

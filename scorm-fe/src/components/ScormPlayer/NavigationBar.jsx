@@ -19,10 +19,9 @@ export default function NavigationBar({
   playerBehavior,
   scormVersion,
   quizAttempt,
-  maxQuizAttempt,
+  isQuizRepeatable,
 }) {
   const [isRetryDisabled, setIsRetryDisabled] = useState(false);
-  const storageKey = "scorm-prototype";
 
   // --- Navigasi ---
   const handlePrevious = useCallback(() => {
@@ -36,42 +35,6 @@ export default function NavigationBar({
 
   // masih buggy, nanti dicek lagi
   const handleRetryQuiz = useCallback(() => {
-    // Check if max attempts reached
-    // const currentAttempts = currentProgress?.quizAttempt || 0;
-    // if (maxQuizAttempt > 0 && currentAttempts >= maxQuizAttempt) {
-    //   alert(`Maximum quiz attempts (${maxQuizAttempt}) reached!`);
-    //   return;
-    // }
-
-    // // Disable button for 3 seconds
-    // setIsRetryDisabled(true);
-
-    // // Increment quiz attempt in localStorage
-    // try {
-    //   const allData = JSON.parse(localStorage.getItem(storageKey) || "[]");
-    //   const progressIndex = allData.findIndex(
-    //     (item) => item.courseId === courseId && item.userId === userId
-    //   );
-
-    //   if (progressIndex > -1) {
-    //     // Increment the quiz attempt
-    //     allData[progressIndex] = {
-    //       ...allData[progressIndex],
-    //       quizAttempt: (allData[progressIndex].quizAttempt || 0) + 1,
-    //       isRetaking: true, // Flag to indicate this is a retake
-    //     };
-
-    //     console.log(allData[progressIndex], "allData[progressIndex]");
-
-    //     localStorage.setItem(storageKey, JSON.stringify(allData));
-    //     console.log(
-    //       `Quiz attempt incremented to: ${allData[progressIndex].quizAttempt}`
-    //     );
-    //   }
-    // } catch (error) {
-    //   console.error("Failed to update quiz attempt:", error);
-    // }
-
     // Trigger iframe reload
     setIsReloading(true);
     setTimeout(() => {
@@ -82,7 +45,7 @@ export default function NavigationBar({
     setTimeout(() => {
       setIsRetryDisabled(false);
     }, 3000);
-  }, [courseId, userId, currentProgress, maxQuizAttempt, setIsReloading]);
+  }, [courseId, userId, currentProgress, setIsReloading]);
 
   // --- flags logic ---
   const isNextDisabled = useMemo(() => {
@@ -105,9 +68,9 @@ export default function NavigationBar({
       isQuizAttempted = scoreValue !== undefined && scoreValue !== "";
     }
 
-    console.log(isQuizAttempted, "isQuizAttempted");
-    console.log(currentItem?.isQuizPage, "currentItem?.isQuizPage");
-    console.log(cmi?.core, "cmi");
+    // console.log(isQuizAttempted, "isQuizAttempted");
+    // console.log(currentItem?.isQuizPage, "currentItem?.isQuizPage");
+    // console.log(cmi?.core, "cmi");
 
     // Syarat next disabled
     return (
@@ -156,7 +119,7 @@ export default function NavigationBar({
 
     const currentItem = manifestItems[currentItemIndex];
     // Tampilkan hanya jika ini adalah halaman kuis
-    if (!currentItem?.isQuizPage) return false;
+    if (!currentItem?.isQuizPage || !isQuizRepeatable) return false;
 
     const cmi = currentProgress?.cmi || {};
     let isAttempted = false;
@@ -177,6 +140,7 @@ export default function NavigationBar({
     manifestItems,
     playerBehavior,
     scormVersion,
+    isQuizRepeatable,
   ]);
 
   const progressPercent = ((currentItemIndex + 1) / manifestItems.length) * 100;
@@ -204,13 +168,6 @@ export default function NavigationBar({
       <div className="text-center flex flex-col justify-center absolute left-1/2 transform -translate-x-1/2">
         <span className="text-sm font-semibold text-slate-800 truncate">
           {manifestItems[currentItemIndex]?.title}{" "}
-          {manifestItems[currentItemIndex]?.isQuizPage &&
-            maxQuizAttempt !== 0 && (
-              <span className="text-xs">
-                - {currentProgress.quizAttempt || quizAttempt}/{maxQuizAttempt}{" "}
-                Attemps
-              </span>
-            )}
           {/* {manifestItems[currentItemIndex]?.title} ({currentItemIndex + 1} /{" "}
           {manifestItems.length}) */}
         </span>
@@ -220,7 +177,6 @@ export default function NavigationBar({
               progress={currentProgress}
               scormVersion={scormVersion}
               quizAttemp={quizAttempt}
-              maxQuizAttempt={maxQuizAttempt}
             />
           </div>
         )}
