@@ -46,17 +46,18 @@ export const courses = [
     playerBehavior: "LMS_HANDLE_NAVIGATION",
     // ketika playerBehavior: "LMS_HANDLE_NAVIGATION", maka opsi dibawah ini sebaiknya ada
     quizPage: 4,
-    isQuizRepeatable: false,
     quizAttempt: 0,
   },
   {
     id: "Furigana-exe-2004",
-    title: "Furigana eXeLearning (SCORM 2004)",
-    description: "Furigana Exelearning SCORM 2004",
+    title: "Furigana eXeLearning (SCORM 2004) + Quiz 1x Attempt",
+    description:
+      "Furigana Exelearning SCORM 2004 + Quiz 1x Attempt , kalau mau ulang reset data aja",
     manifestUrl: `${SCORM_CONTENT_BASE_URL}/furigana-exe-2004/imsmanifest.xml`,
     playerBehavior: "LMS_HANDLE_NAVIGATION",
     // ketika playerBehavior: "LMS_HANDLE_NAVIGATION", maka opsi dibawah ini sebaiknya ada
     quizPage: 5,
+    isQuizRepeatable: false,
     quizAttempt: 0,
   },
   {
