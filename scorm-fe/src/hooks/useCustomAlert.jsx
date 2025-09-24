@@ -1,7 +1,9 @@
+// Biasanya SCORM pakai alert, agar tidak terlalu jadul, kita intercept alert biasa, kemudian ganti pakai modal custom
 import Button from "components/Button";
 import Modal from "components/Modal";
 import { useState, useEffect, useCallback } from "react";
 
+// karena SCORM pakai iframe, kita butuh ref ke iframe.
 export function useCustomAlert(iframeRef) {
   const [alertState, setAlertState] = useState({
     isOpen: false,
@@ -51,7 +53,12 @@ export function useCustomAlert(iframeRef) {
     >
       <p className="text-gray-700">{alertState.message}</p>
       <div className="flex justify-end mt-6">
-        <Button variant="info" onClick={handleClose}>OK</Button>
+        <Button
+          variant="info"
+          onClick={handleClose}
+        >
+          OK
+        </Button>
       </div>
     </Modal>
   );

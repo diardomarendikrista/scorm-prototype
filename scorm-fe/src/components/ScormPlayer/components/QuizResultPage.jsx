@@ -1,3 +1,5 @@
+// hanya muncul jika quiz tidak dapat di repeat.
+
 export default function QuizResultPage({ progress, scormVersion, onRetry }) {
   if (!progress) {
     return <div className="text-center">Memuat hasil...</div>;
