@@ -11,18 +11,19 @@ export const actionSaveProgress = ({
   scormVersion,
   currentProgress,
   setCurrentProgress,
-  progressCacheRef,
   isQuizRepeatable,
 }) => {
   if (!API.current) return;
 
-  console.log(progressCacheRef?.current, "progressCacheRef?.current");
-
   // Ambil data mentah terbaru dari API dan ubah menjadi objek JSON biasa
   const newCmiData = JSON.parse(JSON.stringify(API.current.cmi));
 
-  const currentProgressData = progressCacheRef?.current || currentProgress;
-  const existingCmi = currentProgressData ? currentProgressData.cmi : {};
+  const allData = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  const progressIndex = allData.findIndex(
+    (item) => item.courseId === courseId && item.userId === userId
+  );
+  const progress = progressIndex > -1 ? allData[progressIndex] : null;
+  const existingCmi = progress ? progress.cmi : {};
 
   // Gabungkan objek JSON lama dengan objek JSON baru. Semuanya konsisten.
   const mergedCmi = {
@@ -31,8 +32,8 @@ export const actionSaveProgress = ({
     core: { ...(existingCmi.core || {}), ...(newCmiData.core || {}) },
   };
 
-  let overallStatus = currentProgressData?.overallStatus || "incomplete";
-  let currentAttempt = currentProgressData?.quizAttempt || 0;
+  let overallStatus = progress?.overallStatus || "incomplete";
+  let currentAttempt = progress?.quizAttempt || 0;
 
   if (playerBehavior === "LMS_HANDLE_NAVIGATION") {
     // handle quizAttemp
@@ -40,7 +41,7 @@ export const actionSaveProgress = ({
     if (currentItem?.isQuizPage) {
       const hasNewScore = hasScoreBeenSubmitted(newCmiData, scormVersion);
       const hadPreviousScore = hasScoreBeenSubmitted(
-        currentProgressData?.cmi,
+        progress?.cmi,
         scormVersion
       );
       if (hasNewScore && !hadPreviousScore) {
@@ -84,20 +85,15 @@ export const actionSaveProgress = ({
     quizAttempt: currentAttempt,
   };
 
-  // Simpan objek yang sudah konsisten ke localStorage dan state (harusnya nanti hit API ke BE)
-  const allData = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-  const progressIndex = allData.findIndex(
-    (item) => item.courseId === courseId && item.userId === userId
-  );
-  // const progress = progressIndex > -1 ? allData[progressIndex] : null;
+  // Simpan objek yang sudah konsisten ke localStorage dan state
   if (progressIndex > -1) {
     allData[progressIndex] = finalProgress;
   } else {
     allData.push(finalProgress);
   }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
 
+  // hit API untuk save ke BE
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
   // update data di lokal juga
   setCurrentProgress(finalProgress);
-  progressCacheRef.current = finalProgress;
 };

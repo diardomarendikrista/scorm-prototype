@@ -7,7 +7,6 @@ export default function ({ progress, scormVersion }) {
 
   if (scormVersion.includes("2004")) {
     score = cmi.score?.scaled; // Skor 2004 biasanya dalam bentuk skala 0-1
-    console.log(score, "SKOR");
 
     // Untuk mendapatkan skor mentah, kita kalikan 100
     if (score !== undefined && score !== null && score !== "") {

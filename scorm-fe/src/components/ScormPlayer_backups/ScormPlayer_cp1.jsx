@@ -7,7 +7,7 @@ import QuizResultPage from "./components/QuizResultPage";
 import { getBaseUrl } from "./lib/utils";
 import useScormManifest from "./hooks/useScormManifest";
 import { useScormProgress } from "./hooks/useScormProgress";
-import { actionSaveProgress } from "./actions";
+import { actionSaveProgress } from "./actions_bak";
 
 export default function ScormPlayer({
   courseId,
@@ -22,7 +22,6 @@ export default function ScormPlayer({
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
   const [isReloading, setIsReloading] = useState(false);
 
-  const progressCacheRef = useRef(null); // pada dasarnya ini adalah "currentProgress", tapi selalu terbaru karena bukan state. ini wajib ada untuk scorm quiz dengan player behavior LMS_HANDLE_NAVIGATION, karena progress selalu update
   const API = useRef(null);
   const iframeRef = useRef(null);
   const STORAGE_KEY = "scorm-prototype";
@@ -83,7 +82,6 @@ export default function ScormPlayer({
       currentItemIndex,
       scormVersion,
       setCurrentProgress,
-      progressCacheRef,
       currentProgress,
       isQuizRepeatable,
     });
