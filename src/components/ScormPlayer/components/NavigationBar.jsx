@@ -175,7 +175,7 @@ export default function NavigationBar({
           {/* {manifestItems[currentItemIndex]?.title} ({currentItemIndex + 1} /{" "}
           {manifestItems.length}) */}
         </span>
-        {manifestItems[currentItemIndex]?.isQuizPage && isMultiPageQuiz && (
+        {manifestItems[currentItemIndex]?.isQuizPage && !isMultiPageQuiz && (
           <div className="text-xs font-semibold text-green-600 leading-tight mt-1">
             <QuizScoreDisplay
               progress={currentProgress}
