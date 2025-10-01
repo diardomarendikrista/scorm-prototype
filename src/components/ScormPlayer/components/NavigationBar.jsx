@@ -20,6 +20,7 @@ export default function NavigationBar({
   scormVersion,
   quizAttempt,
   isQuizRepeatable,
+  isMultiPageQuiz,
 }) {
   const [isRetryDisabled, setIsRetryDisabled] = useState(false);
 
@@ -67,6 +68,9 @@ export default function NavigationBar({
       const scoreValue = cmi.core?.score?.raw;
       isQuizAttempted = scoreValue !== undefined && scoreValue !== "";
     }
+
+    // tapi kalau isMultiPageQuiz, maka next dinyalakan terus
+    if (!isMultiPageQuiz) return false;
 
     // console.log(isQuizAttempted, "isQuizAttempted");
     // console.log(currentItem?.isQuizPage, "currentItem?.isQuizPage");
@@ -171,7 +175,7 @@ export default function NavigationBar({
           {/* {manifestItems[currentItemIndex]?.title} ({currentItemIndex + 1} /{" "}
           {manifestItems.length}) */}
         </span>
-        {manifestItems[currentItemIndex]?.isQuizPage && (
+        {manifestItems[currentItemIndex]?.isQuizPage && isMultiPageQuiz && (
           <div className="text-xs font-semibold text-green-600 leading-tight mt-1">
             <QuizScoreDisplay
               progress={currentProgress}

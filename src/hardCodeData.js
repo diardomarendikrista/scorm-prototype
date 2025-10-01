@@ -45,7 +45,7 @@ export const courses = [
     manifestUrl: `${SCORM_CONTENT_BASE_URL}/furigana-exe/imsmanifest.xml`,
     playerBehavior: "LMS_HANDLE_NAVIGATION",
     // ketika playerBehavior: "LMS_HANDLE_NAVIGATION", maka opsi dibawah ini sebaiknya ada
-    quizPage: 4,
+    quizPage: [4],
     quizAttempt: 0,
   },
   {
@@ -56,7 +56,7 @@ export const courses = [
     manifestUrl: `${SCORM_CONTENT_BASE_URL}/furigana-exe-2004/imsmanifest.xml`,
     playerBehavior: "LMS_HANDLE_NAVIGATION",
     // ketika playerBehavior: "LMS_HANDLE_NAVIGATION", maka opsi dibawah ini sebaiknya ada
-    quizPage: 5,
+    quizPage: [5],
     isQuizRepeatable: false,
     quizAttempt: 0,
   },
@@ -67,7 +67,7 @@ export const courses = [
     manifestUrl: `${SCORM_CONTENT_BASE_URL}/daya-sample/imsmanifest.xml`,
     playerBehavior: "LMS_HANDLE_NAVIGATION",
     // ketika playerBehavior: "LMS_HANDLE_NAVIGATION", maka opsi dibawah ini sebaiknya ada
-    quizPage: 2,
+    quizPage: [2],
   },
   {
     id: "daya-sample-2",
@@ -77,5 +77,14 @@ export const courses = [
     playerBehavior: "LMS_HANDLE_NAVIGATION",
     // ketika playerBehavior: "LMS_HANDLE_NAVIGATION", maka opsi dibawah ini sebaiknya ada
     quizPage: false,
+  },
+  {
+    id: "gakken-sample-questions",
+    title: "Gakken Sample Question (SCORM 1.2)",
+    description: "Gakken Sample Question, using eXeLearning , SCORM 1.2",
+    manifestUrl: `${SCORM_CONTENT_BASE_URL}/gakken-sample-question/imsmanifest.xml`,
+    playerBehavior: "LMS_HANDLE_NAVIGATION",
+    // ketika playerBehavior: "LMS_HANDLE_NAVIGATION", maka opsi dibawah ini sebaiknya ada
+    quizPage: [3, 4, 5, 7, 8],
   },
 ];

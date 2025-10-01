@@ -5,6 +5,7 @@ export default function useScormManifest({ manifestUrl, quizPage }) {
   const [loadingManifest, setLoadingManifest] = useState(false);
   const [errorManifest, setErrorManifest] = useState(null);
   const [manifestItems, setManifestItems] = useState([]);
+  const [isMultiPageQuiz, setIsMultiPageQuiz] = useState(false);
 
   useEffect(() => {
     if (!manifestUrl) return;
@@ -29,15 +30,31 @@ export default function useScormManifest({ manifestUrl, quizPage }) {
         });
         const allItems = Array.from(itemNodes).map((n, index) => {
           const title = n.querySelector("title")?.textContent || "Untitled";
+          let isThisAQuizPage = false;
+          const currentItemIndexOneBased = index + 1;
+
+          if (Array.isArray(quizPage)) {
+            // jika format array
+            isThisAQuizPage = quizPage.includes(currentItemIndexOneBased);
+          } else if (typeof quizPage === "number" && quizPage > 0) {
+            // Jika format integer
+            isThisAQuizPage = currentItemIndexOneBased === quizPage;
+          }
+
           return {
             id: n.getAttribute("identifier"),
             title: title,
             href: resources[n.getAttribute("identifierref")],
-            isQuizPage: index === quizPage - 1,
+            isQuizPage: isThisAQuizPage,
           };
         });
 
+        // kalau lebih dari 1 quiz page, maka next jangan di block
+        if (quizPage?.length > 1) setIsMultiPageQuiz(true);
+        else setIsMultiPageQuiz(false);
+
         const launchableItems = allItems.filter((item) => item.href);
+        console.log(launchableItems, "launchableItems");
         setManifestItems(launchableItems);
       } catch (err) {
         console.error("Gagal memuat manifest SCORM:", err);
@@ -54,5 +71,6 @@ export default function useScormManifest({ manifestUrl, quizPage }) {
     errorManifest,
     manifestItems,
     scormVersion,
+    isMultiPageQuiz,
   };
 }

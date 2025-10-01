@@ -29,10 +29,11 @@ export default function ScormPlayer({
   const { CustomAlertModal } = useCustomAlert(iframeRef);
 
   // --- Hook untuk Mengambil & Mem-parsing Manifest ---
-  const { manifestItems, scormVersion, loadingManifest } = useScormManifest({
-    manifestUrl,
-    quizPage,
-  });
+  const { manifestItems, scormVersion, loadingManifest, isMultiPageQuiz } =
+    useScormManifest({
+      manifestUrl,
+      quizPage,
+    });
 
   // --- Hook untuk update progress
   useScormProgress({
@@ -71,6 +72,8 @@ export default function ScormPlayer({
     playerBehavior,
     isQuizRepeatable,
   ]);
+
+  console.log(manifestItems[currentItemIndex], "currentItem");
 
   const saveProgress = () => {
     actionSaveProgress({
@@ -190,6 +193,7 @@ export default function ScormPlayer({
             scormVersion={scormVersion}
             quizAttempt={quizAttempt}
             isQuizRepeatable={isQuizRepeatable}
+            isMultiPageQuiz={isMultiPageQuiz}
           />
         )}
     </div>
