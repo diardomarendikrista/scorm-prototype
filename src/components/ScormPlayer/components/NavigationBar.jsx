@@ -70,7 +70,7 @@ export default function NavigationBar({
     }
 
     // tapi kalau isMultiPageQuiz, maka next dinyalakan terus
-    if (!isMultiPageQuiz) return false;
+    if (isMultiPageQuiz) return false;
 
     // console.log(isQuizAttempted, "isQuizAttempted");
     // console.log(currentItem?.isQuizPage, "currentItem?.isQuizPage");
@@ -93,7 +93,10 @@ export default function NavigationBar({
     const currentItem = manifestItems[currentItemIndex];
 
     // Jika halaman terakhir BUKAN kuis, tombol langsung aktif
-    if (!currentItem?.isQuizPage) {
+    if (
+      !currentItem?.isQuizPage ||
+      (currentItem?.isQuizPage && isMultiPageQuiz)
+    ) {
       return false;
     }
 
