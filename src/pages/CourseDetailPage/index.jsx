@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { courses } from "hardCodeData";
+import { courses } from "data/courseData";
 import ScormPlayer from "components/ScormPlayer";
 
 export default function CourseDetailPage() {

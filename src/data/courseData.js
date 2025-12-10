@@ -1,6 +1,6 @@
 const SCORM_CONTENT_BASE_URL = "/scorm-proxy/scorm-content";
 
-export const courses = [
+const data = [
   {
     id: "golf",
     title: "Golf Basics (SCORM 1.2)",
@@ -87,4 +87,16 @@ export const courses = [
     // ketika playerBehavior: "LMS_HANDLE_NAVIGATION", maka opsi dibawah ini sebaiknya ada
     quizPage: [3, 4, 5, 7, 8],
   },
+  {
+    id: "Demo_Gakken",
+    title: "Demo Gakken (SCORM 1.2)",
+    description: "Demo Gakken, using eXeLearning , SCORM 1.2",
+    manifestUrl: `${SCORM_CONTENT_BASE_URL}/Demo_Gakken/imsmanifest.xml`,
+    playerBehavior: "LMS_HANDLE_NAVIGATION",
+    // ketika playerBehavior: "LMS_HANDLE_NAVIGATION", maka opsi dibawah ini sebaiknya ada
+    quizPage: false,
+  },
 ];
+
+// dibalik
+export const courses = [...data].reverse();
