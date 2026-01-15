@@ -163,6 +163,7 @@ export default function NavigationBar({
         disabled={currentItemIndex === 0}
         className="scorm-nav-btn scorm-nav-btn-prev"
       >
+        <span>&lt;</span>
         <span className="scorm-nav-btn-text">Previous</span>
       </button>
 
@@ -200,6 +201,7 @@ export default function NavigationBar({
             className="scorm-nav-btn scorm-nav-btn-next"
           >
             <span className="scorm-nav-btn-text">Next</span>
+            <span>&gt;</span>
           </button>
         ) : (
           <button
