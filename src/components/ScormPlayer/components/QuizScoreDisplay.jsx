@@ -1,4 +1,6 @@
-export default function ({ progress, scormVersion }) {
+import "./quizscoredisplay.css";
+
+export default function QuizScoreDisplay({ progress, scormVersion }) {
   // Jangan tampilkan apa-apa jika belum ada progres
   if (!progress) return null;
 
@@ -21,14 +23,14 @@ export default function ({ progress, scormVersion }) {
     maxScore = cmi.core?.score?.max;
   }
 
-  // Hanya tampilkan jika skor adalah angka yang valid
+  // Hanya tampilkan jika skor adalah angka yang valid (atau placeholder "-")
   if (score === undefined || score === null || score === "") {
     return null;
   }
 
   return (
-    <div className="text-sm font-semibold text-gray-700">
-      Your Score: {score || 0} / {maxScore || 100}
+    <div className="scorm-score-display">
+      Your Score: {score} / {maxScore || 100}
     </div>
   );
 }

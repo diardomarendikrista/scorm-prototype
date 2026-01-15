@@ -1,0 +1,133 @@
+/* Container */
+.scorm-nav-container {
+  flex-shrink: 0;
+  background-color: #f1f5f9; /* slate-100 */
+  padding: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 -5px 15px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Progress Bar */
+.scorm-nav-progress-wrapper {
+  margin-top: 0.375rem;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.scorm-nav-progress-track {
+  width: 100%;
+  background-color: #cbd5e1; /* slate-300 */
+  border-radius: 9999px;
+  height: 0.375rem; /* 1.5 equivalent */
+}
+
+.scorm-nav-progress-fill {
+  background-color: #2563eb; /* blue-600 */
+  height: 0.375rem;
+  border-radius: 9999px;
+  transition: width 0.5s ease-in-out;
+}
+
+/* Common Button Styles */
+.scorm-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.scorm-nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Button Variants */
+.scorm-nav-btn-prev {
+  background-color: #ffffff;
+  color: #334155; /* slate-700 */
+}
+.scorm-nav-btn-prev:hover:not(:disabled) {
+  background-color: #e2e8f0; /* slate-200 */
+}
+
+.scorm-nav-btn-next {
+  background-color: #2563eb; /* blue-600 */
+  color: #ffffff;
+}
+.scorm-nav-btn-next:hover:not(:disabled) {
+  background-color: #1d4ed8; /* blue-700 */
+}
+
+.scorm-nav-btn-finish {
+  background-color: #16a34a; /* green-600 */
+  color: #ffffff;
+}
+.scorm-nav-btn-finish:hover:not(:disabled) {
+  background-color: #15803d; /* green-700 */
+}
+
+.scorm-nav-btn-retry {
+  background-color: #eab308; /* yellow-500 */
+  color: #ffffff;
+}
+.scorm-nav-btn-retry:hover:not(:disabled) {
+  background-color: #ca8a04; /* yellow-600 */
+}
+
+/* Button Text Responsive Logic (replaces hidden md:inline) */
+.scorm-nav-btn-text {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .scorm-nav-btn-text {
+    display: inline;
+  }
+}
+
+/* Center Title Area */
+.scorm-nav-center {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 40%; /* Prevent overlap with buttons */
+}
+
+.scorm-nav-title {
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 600;
+  color: #1e293b; /* slate-800 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.scorm-nav-score {
+  font-size: 0.75rem; /* text-xs */
+  font-weight: 600;
+  color: #16a34a; /* green-600 */
+  line-height: 1.25;
+  margin-top: 0.25rem;
+}
+
+/* Action Group (Right side buttons) */
+.scorm-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}

@@ -1,0 +1,6 @@
+.scorm-score-display {
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 600; /* font-semibold */
+  color: #374151; /* text-gray-700 */
+  white-space: nowrap; /* Mencegah teks terpotong aneh */
+}

@@ -1,12 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import QuizScoreDisplay from "./QuizScoreDisplay";
-import {
-  RiArrowLeftSLine,
-  RiArrowRightSLine,
-  RiRestartLine,
-  RiFlagLine,
-} from "react-icons/ri";
-import { cn } from "lib/utils";
+import "./navigationbar.css";
 
 export default function NavigationBar({
   courseId,
@@ -18,7 +12,6 @@ export default function NavigationBar({
   setIsReloading,
   playerBehavior,
   scormVersion,
-  quizAttempt,
   isQuizRepeatable,
   isMultiPageQuiz,
 }) {
@@ -153,57 +146,50 @@ export default function NavigationBar({
   const progressPercent = ((currentItemIndex + 1) / manifestItems.length) * 100;
 
   return (
-    <div className="flex-shrink-0 bg-slate-100 p-3 flex justify-between items-center shadow-[0_-5px_15px_-5px_rgba(0,0,0,0.1)] relative">
-      <div className="mt-1.5 w-full absolute bottom-0 left-0">
-        <div className="w-full bg-slate-300 rounded-full h-1.5">
+    <div className="scorm-nav-container">
+      {/* Progress Bar */}
+      <div className="scorm-nav-progress-wrapper">
+        <div className="scorm-nav-progress-track">
           <div
-            className="bg-blue-600 h-1.5 rounded-full transition-all duration-500"
+            className="scorm-nav-progress-fill"
             style={{ width: `${progressPercent}%` }}
           ></div>
         </div>
       </div>
 
+      {/* Previous Button */}
       <button
         onClick={handlePrevious}
         disabled={currentItemIndex === 0}
-        className="flex items-center gap-2 px-4 py-2 bg-white text-slate-700 rounded-full shadow-sm hover:bg-slate-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="scorm-nav-btn scorm-nav-btn-prev"
       >
-        <RiArrowLeftSLine className="w-5 h-5" />
-        <span className="hidden md:inline">Previous</span>
+        <span className="scorm-nav-btn-text">Previous</span>
       </button>
 
-      <div className="text-center flex flex-col justify-center absolute left-1/2 transform -translate-x-1/2">
-        <span className="text-sm font-semibold text-slate-800 truncate">
-          {manifestItems[currentItemIndex]?.title}{" "}
-          {/* {manifestItems[currentItemIndex]?.title} ({currentItemIndex + 1} /{" "}
-          {manifestItems.length}) */}
+      {/* Title & Score Center */}
+      <div className="scorm-nav-center">
+        <span className="scorm-nav-title">
+          {manifestItems[currentItemIndex]?.title}
         </span>
         {manifestItems[currentItemIndex]?.isQuizPage && !isMultiPageQuiz && (
-          <div className="text-xs font-semibold text-green-600 leading-tight mt-1">
+          <div className="scorm-nav-score">
             <QuizScoreDisplay
               progress={currentProgress}
               scormVersion={scormVersion}
-              quizAttemp={quizAttempt}
             />
           </div>
         )}
       </div>
 
-      <div className="flex items-center gap-3">
+      {/* Right Side Buttons */}
+      <div className="scorm-nav-actions">
         {showRetryButton && (
           <button
             onClick={handleRetryQuiz}
-            className={cn(
-              "flex items-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded-full shadow-sm hover:bg-yellow-600 transition-colors",
-              {
-                "opacity-50 cursor-not-allowed hover:bg-yellow-500 !cursor-not-allowed":
-                  isRetryDisabled,
-              }
-            )}
+            className="scorm-nav-btn scorm-nav-btn-retry"
             disabled={isRetryDisabled}
           >
-            <RiRestartLine className="w-5 h-5" />
-            <span className="hidden md:inline">Retry Quiz</span>
+            <span className="scorm-nav-btn-text">Retry Quiz</span>
           </button>
         )}
 
@@ -211,19 +197,17 @@ export default function NavigationBar({
           <button
             onClick={handleNext}
             disabled={isNextDisabled}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-full shadow-sm hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="scorm-nav-btn scorm-nav-btn-next"
           >
-            <span className="hidden md:inline">Next</span>
-            <RiArrowRightSLine className="w-5 h-5" />
+            <span className="scorm-nav-btn-text">Next</span>
           </button>
         ) : (
           <button
             onClick={() => window.close()}
             disabled={isFinishDisabled}
-            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-full shadow-sm hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="scorm-nav-btn scorm-nav-btn-finish"
           >
-            <RiFlagLine className="w-5 h-5" />
-            <span className="hidden md:inline">Finish</span>
+            <span className="scorm-nav-btn-text">Finish</span>
           </button>
         )}
       </div>

@@ -1,41 +1,40 @@
 import { useEffect, useState, useRef, useMemo } from "react";
 import { Scorm12API, Scorm2004API } from "scorm-again";
-import { useCustomAlert } from "hooks/useCustomAlert";
-import { cn } from "lib/utils";
+// import { useCustomAlert } from "hooks/useCustomAlert";
 import NavigationBar from "./components/NavigationBar";
 import QuizResultPage from "./components/QuizResultPage";
 import { getBaseUrl } from "./lib/utils";
 import useScormManifest from "./hooks/useScormManifest";
 import { useScormProgress } from "./hooks/useScormProgress";
 import { actionSaveProgress } from "./actions";
+import "./index.css";
 
 export default function ScormPlayer({
-  courseId,
-  userId,
-  manifestUrl,
-  playerBehavior = "NORMAL", // NORMAL | LMS_HANDLE_NAVIGATION
-  quizPage = false,
-  isQuizRepeatable = true,
-  quizAttempt = 0,
+  courseId, // string - dari parameter URL
+  userId, // string - optional, kalau tidak ada, hapus saja
+  manifestUrl, // string - dari data course
+  playerBehavior = "NORMAL", // string - tipe hanya: NORMAL | LMS_HANDLE_NAVIGATION
+  quizPage = false, // array, halaman-halaman yang merupakan quiz
+  isQuizRepeatable = true, // boolean - apakah quiz bisa diulang
 }) {
   const [currentProgress, setCurrentProgress] = useState(null);
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
   const [isReloading, setIsReloading] = useState(false);
 
-  const progressCacheRef = useRef(null); // pada dasarnya ini adalah "currentProgress", tapi selalu terbaru karena bukan state. ini wajib ada untuk scorm quiz dengan player behavior LMS_HANDLE_NAVIGATION, karena progress selalu update
+  const progressCacheRef = useRef(null);
   const API = useRef(null);
   const iframeRef = useRef(null);
   const STORAGE_KEY = "scorm-prototype";
-  const { CustomAlertModal } = useCustomAlert(iframeRef);
+  // const { CustomAlertModal } = useCustomAlert(iframeRef);
 
-  // --- Hook untuk Mengambil & Mem-parsing Manifest ---
+  // --- Hook to Fetch & Parse Manifest ---
   const { manifestItems, scormVersion, loadingManifest, isMultiPageQuiz } =
     useScormManifest({
       manifestUrl,
       quizPage,
     });
 
-  // --- Hook untuk update progress
+  // --- Hook to update progress ---
   useScormProgress({
     courseId,
     userId,
@@ -52,18 +51,12 @@ export default function ScormPlayer({
       : "";
 
   const quizAttemptsExhausted = useMemo(() => {
-    // Fitur ini hanya dipakai di mode LMS_HANDLE_NAVIGATION
     if (playerBehavior !== "LMS_HANDLE_NAVIGATION") return false;
 
     const currentItem = manifestItems[currentItemIndex];
-
-    // Cek apakah ini halaman kuis
     if (!currentItem?.isQuizPage) return false;
 
-    // Ambil jumlah percobaan yang sudah dilakukan
     const attemptsTaken = currentProgress?.quizAttempt || 0;
-
-    // Cek apakah maxQuizAttempt lebih dari 0 dan isQuizRepeatable false
     return !isQuizRepeatable && attemptsTaken > 0;
   }, [
     currentProgress,
@@ -92,7 +85,7 @@ export default function ScormPlayer({
     });
   };
 
-  // --- EFEK: Mengelola Sesi API untuk SETIAP SCO ---
+  // --- EFFECT: Manage API Session for EACH SCO ---
   useEffect(() => {
     if (
       loadingManifest ||
@@ -125,7 +118,6 @@ export default function ScormPlayer({
       saveProgress();
     };
     const onTerminate = () => {
-      // console.log("Terminate/Finish triggered:", API.current.cmi);
       saveProgress();
       if (playerBehavior === "NORMAL" || manifestItems.length <= 1) {
         window.close();
@@ -153,15 +145,15 @@ export default function ScormPlayer({
 
   if (loadingManifest) {
     return (
-      <div className="w-full h-full flex items-center justify-center">
+      <div className="scorm-player-loading">
         <p>Loading SCORM...</p>
       </div>
     );
   }
 
   return (
-    <div className="w-full h-full flex flex-col">
-      {CustomAlertModal}
+    <div className="scorm-player-container">
+      {/* {CustomAlertModal} */}
 
       {quizAttemptsExhausted && (
         <QuizResultPage
@@ -169,13 +161,12 @@ export default function ScormPlayer({
           scormVersion={scormVersion}
         />
       )}
+
       <iframe
         ref={iframeRef}
-        src={isReloading ? "about:blank" : currentItemUrl} // handle untuk retake quiz
-        key={`${currentItemUrl}-${isReloading}`} // handle untuk retake quiz
-        className={cn("flex-grow w-full border-0", {
-          hidden: quizAttemptsExhausted,
-        })}
+        src={isReloading ? "about:blank" : currentItemUrl}
+        key={`${currentItemUrl}-${isReloading}`}
+        className={`scorm-player-iframe ${quizAttemptsExhausted ? "hidden" : ""}`}
         title="SCORM Content Player"
       ></iframe>
 
@@ -191,7 +182,6 @@ export default function ScormPlayer({
             setIsReloading={setIsReloading}
             playerBehavior={playerBehavior}
             scormVersion={scormVersion}
-            quizAttempt={quizAttempt}
             isQuizRepeatable={isQuizRepeatable}
             isMultiPageQuiz={isMultiPageQuiz}
           />

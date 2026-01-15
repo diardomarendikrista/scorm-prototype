@@ -64,7 +64,6 @@ export default function CourseDetailPage() {
             playerBehavior={course?.playerBehavior}
             quizPage={course?.quizPage}
             isQuizRepeatable={course?.isQuizRepeatable}
-            quizAttempt={course?.quizAttempt}
           />
         </div>
       </main>
