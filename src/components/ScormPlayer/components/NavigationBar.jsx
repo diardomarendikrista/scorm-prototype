@@ -190,6 +190,7 @@ export default function NavigationBar({
             className="scorm-nav-btn scorm-nav-btn-retry"
             disabled={isRetryDisabled}
           >
+            <span>⟳</span>
             <span className="scorm-nav-btn-text">Retry Quiz</span>
           </button>
         )}
@@ -209,6 +210,7 @@ export default function NavigationBar({
             disabled={isFinishDisabled}
             className="scorm-nav-btn scorm-nav-btn-finish"
           >
+            <span>🚩</span>
             <span className="scorm-nav-btn-text">Finish</span>
           </button>
         )}
