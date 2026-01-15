@@ -9,13 +9,25 @@ import { useScormProgress } from "./hooks/useScormProgress";
 import { actionSaveProgress } from "./actions";
 import "./index.css";
 
+/**
+ * SCORM Player utama untuk menjalankan course SCORM 1.2 / 2004
+ *
+ * @param {string} props.courseId - ID course (dari URL)
+ * @param {string} [props.userId] - ID user (optional), kalau tidak ada, hapus saja
+ * @param {string} props.manifestUrl - URL imsmanifest.xml
+ * @param {"NORMAL"|"LMS_HANDLE_NAVIGATION"} [props.playerBehavior="NORMAL"]
+ *        NORMAL: player mengatur navigasi sendiri
+ *        LMS_HANDLE_NAVIGATION: LMS menangani next/prev
+ * @param {number[]} [props.quizPage=false] - Index halaman yang merupakan quiz
+ * @param {boolean} [props.isQuizRepeatable=true] - Apakah quiz bisa diulang
+ */
 export default function ScormPlayer({
-  courseId, // string - dari parameter URL
-  userId, // string - optional, kalau tidak ada, hapus saja
-  manifestUrl, // string - dari data course
-  playerBehavior = "NORMAL", // string - tipe hanya: NORMAL | LMS_HANDLE_NAVIGATION
-  quizPage = false, // array, halaman-halaman yang merupakan quiz
-  isQuizRepeatable = true, // boolean - apakah quiz bisa diulang
+  courseId,
+  userId,
+  manifestUrl,
+  playerBehavior = "NORMAL",
+  quizPage = false,
+  isQuizRepeatable = true,
 }) {
   const [currentProgress, setCurrentProgress] = useState(null);
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
