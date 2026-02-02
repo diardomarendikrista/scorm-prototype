@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>文字語彙 (Vocabulary Section) | Gakken Demo </title>
+<meta name="author" content="dayatech" />
+<link rel="license" type="text/html" href="http://creativecommons.org/licenses/by-sa/4.0/" />
+<meta name="generator" content="eXeLearning 2.9 - exelearning.net" />
+<link rel="stylesheet" type="text/css" href="base.css" />
+<link rel="stylesheet" type="text/css" href="content.css" />
+<!--[if lt IE 9]><script type="text/javascript" src="exe_html5.js"></script><![endif]-->
+<script type="text/javascript" src="exe_jquery.js"></script>
+<script type="text/javascript" src="common_i18n.js"></script>
+<script type="text/javascript" src="common.js"></script>
+<script type="text/javascript" src="SCORM_API_wrapper.js"></script>
+<script type="text/javascript" src="SCOFunctions.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body id="exe-node-4" class="exe-scorm" onunload="unloadPage(true)"><script type="text/javascript">document.body.className+=" js";jQuery(function(){loadPage()})</script>
+<div id="outer">
+<section id="main">
+<header id="nodeDecoration"><div id="headerContent"><h1 id="nodeTitle">文字語彙 (Vocabulary Section)</h1></div></header>
+<article class="iDevice_wrapper QuizTestIdevice em_iDevice em_iDevice_question" id="id9">
+<script type="text/javascript">
+<!-- //<![CDATA[
+scorm.SetInteractionValue("cmi.score.scaled", "0");
+var numQuestions = 3;
+var rawScore = 0;
+var actualScore = 0;
+var question0;
+var question1;
+var question2;
+var key0 = 2;
+var key1 = 1;
+var key2 = 3;
+function getAnswer()
+        {
+            scorm.SetInteractionValue("cmi.interactions.0.id","key0b9");
+            scorm.SetInteractionValue("cmi.interactions.0.type","choice");
+            scorm.SetInteractionValue("cmi.interactions.0.correct_responses.0.pattern",
+                          "2");
+            
+            for (var i=0; i < 4; i++)
+            {
+               if (document.getElementById("quizForm9").key0b9[i].checked)
+               {
+                  question0 = document.getElementById("quizForm9").key0b9[i].value;
+                  scorm.SetInteractionValue("cmi.interactions.0.student_response",question0);
+                  break;
+               }
+            }
+           
+            scorm.SetInteractionValue("cmi.interactions.1.id","key1b9");
+            scorm.SetInteractionValue("cmi.interactions.1.type","choice");
+            scorm.SetInteractionValue("cmi.interactions.1.correct_responses.0.pattern",
+                          "1");
+            
+            for (var i=0; i < 4; i++)
+            {
+               if (document.getElementById("quizForm9").key1b9[i].checked)
+               {
+                  question1 = document.getElementById("quizForm9").key1b9[i].value;
+                  scorm.SetInteractionValue("cmi.interactions.1.student_response",question1);
+                  break;
+               }
+            }
+           
+            scorm.SetInteractionValue("cmi.interactions.2.id","key2b9");
+            scorm.SetInteractionValue("cmi.interactions.2.type","choice");
+            scorm.SetInteractionValue("cmi.interactions.2.correct_responses.0.pattern",
+                          "3");
+            
+            for (var i=0; i < 4; i++)
+            {
+               if (document.getElementById("quizForm9").key2b9[i].checked)
+               {
+                  question2 = document.getElementById("quizForm9").key2b9[i].value;
+                  scorm.SetInteractionValue("cmi.interactions.2.student_response",question2);
+                  break;
+               }
+            }
+           }
+        function calcRawScore(){
+
+            if (question0 == key0)
+            {
+               scorm.SetInteractionValue("cmi.interactions.0.result","correct");
+               rawScore++;
+            }
+            else
+            {
+               scorm.SetInteractionValue("cmi.interactions.0.result","wrong");
+            }
+            if (question1 == key1)
+            {
+               scorm.SetInteractionValue("cmi.interactions.1.result","correct");
+               rawScore++;
+            }
+            else
+            {
+               scorm.SetInteractionValue("cmi.interactions.1.result","wrong");
+            }
+            if (question2 == key2)
+            {
+               scorm.SetInteractionValue("cmi.interactions.2.result","correct");
+               rawScore++;
+            }
+            else
+            {
+               scorm.SetInteractionValue("cmi.interactions.2.result","wrong");
+            }
+        }
+       
+        function calcScore2()
+        {
+           computeTime();  // the student has stopped here.
+       
+           document.getElementById("quizForm9").submitB.disabled = true;
+       
+           getAnswer();
+    
+           calcRawScore();
+          
+           actualScore = Math.round(rawScore / numQuestions * 100);
+                    var msg_str ="Your score is %d%%";            alert(msg_str.replace("%d",actualScore).replace("%%","%"));  
+          
+           scorm.SetScoreRaw(actualScore+"" );
+           scorm.SetScoreMax(100);
+           scorm.SetScoreMin(0);
+          
+           var mode = scorm.GetMode();
+
+               if ( mode != "review"  &&  mode != "browse" ){
+                 if ( actualScore < 50 )
+                 {
+                   scorm.SetCompletionScormActivity("incomplete");
+                   scorm.SetSuccessStatus("failed");
+                   if (scorm.version == '2004') {
+                       scorm.SetInteractionValue("cmi.score.scaled", actualScore/100);
+                   }
+                 }
+                 else
+                 {
+                   scorm.SetCompletionScormActivity("completed");
+                   scorm.SetSuccessStatus("passed");
+                   if (scorm.version == '2004') {
+                       scorm.SetInteractionValue("cmi.score.scaled", actualScore/100);
+                   }
+                 }
+
+                 scorm.SetExit("");
+                 }
+
+         exitPageStatus = true;
+    
+    
+         scorm.save();
+    
+         scorm.quit();
+         
+        }
+//]]> -->
+</script>
+<div class="iDevice emphasis1" >
+<header class="iDevice_header"><h1 class="iDeviceTitle">文字語彙</h1></header>
+<div class="iDevice_inner">
+<div class="iDevice_content_wrapper">
+<form name="quizForm9" id="quizForm9" action="#" class="quiz-test-form">
+<input type="hidden" name="passrate" id="passrate-9" value="50" />
+<section class="question">
+<h1 class="js-sr-av">Question</h1>
+<div id="taquestion0b9" class="block iDevice_content">
+<style>
+ruby rt {
+visibility: hidden;       /* sembunyikan furigana awalnya */
+opacity: 0;                /* buat transparan */
+transition: opacity 0.2s;  /* efek
+halus saat muncul */
+}
+
+ruby:hover rt {
+visibility: visible; /* tampilkan saat hover */ 
+opacity: 1;          /* buat terlihat */
+}
+
+p {
+padding: 0;
+margin: 0;
+}
+</style>
+<table border="0" style="width: 100%; border-style: none;">
+<tbody>
+<tr>
+<td style="width: 3.99061%;">1.</td>
+<td style="width: 96.0094%;">
+<p><ruby>いちばん</ruby><ruby>　</ruby><ruby>いい</ruby><ruby>　</ruby><ruby>もの</ruby><ruby>を</ruby><ruby>　</ruby><ruby style="margin-right: 4px; cursor: pointer;">一つ<rt style="font-size: 0.6em;">ひとつ</rt></ruby><ruby>　</ruby><ruby>えらん</ruby><ruby>で</ruby><ruby>　</ruby><ruby>ください</ruby><ruby>。</ruby></p>
+</td>
+</tr>
+<tr>
+<td style="width: 3.99061%;"></td>
+<td style="width: 96.0094%;">
+<p><ruby style="margin-right: 4px; cursor: pointer;">都会<rt style="font-size: 0.6em;">とかい</rt></ruby><ruby>の</ruby><ruby>　</ruby><ruby style="margin-right: 4px; cursor: pointer;">生活<rt style="font-size: 0.6em;">せいかつ</rt></ruby><ruby>は</ruby><ruby>　</ruby><ruby style="margin-right: 4px; cursor: pointer;">楽<rt style="font-size: 0.6em;">らく</rt></ruby><ruby>し</ruby><ruby>い</ruby><ruby>です</ruby><ruby>が</ruby><ruby>、</ruby><ruby>　</ruby><ruby> </ruby><ruby style="margin-right: 4px; cursor: pointer;">少<rt style="font-size: 0.6em;">しょう</rt></ruby><ruby>し</ruby><ruby>　</ruby><ruby>疲</ruby><ruby>【</ruby><ruby>つか</ruby><ruby>】</ruby><ruby>れ</ruby><ruby>ます</ruby><ruby>。</ruby></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<section class="iDevice_answers">
+<h1 class="js-sr-av">Answers</h1>
+<section class="iDevice_answer">
+<p class="iDevice_answer-field js-required">
+<label for="key0b91" class="sr-av"><a href="#answer-key0b91">Option 1</a></label><input type="radio" name="key0b9" id="key0b91" value="0" />
+</p>
+<div class="iDevice_answer-content" id="answer-key0b91">
+<div id="taoptionAnswer0q0b9" class="block iDevice_content">
+<style>
+ruby rt {
+visibility: hidden;       /* sembunyikan furigana awalnya */
+opacity: 0;                /* buat transparan */
+transition: opacity 0.2s;  /* efek
+halus saat muncul */
+}
+
+ruby:hover rt {
+visibility: visible; /* tampilkan saat hover */ 
+opacity: 1;          /* buat terlihat */
+}
+
+p {
+padding: 0;
+margin: 0;
+}
+</style>
+<p>とけい</p>
+</div>
+</div>
+</section>
+<section class="iDevice_answer">
+<p class="iDevice_answer-field js-required">
+<label for="key0b92" class="sr-av"><a href="#answer-key0b92">Option 2</a></label><input type="radio" name="key0b9" id="key0b92" value="1" />
+</p>
+<div class="iDevice_answer-content" id="answer-key0b92">
+<div id="taoptionAnswer1q0b9" class="block iDevice_content">
+<style>
+ruby rt {
+visibility: hidden;       /* sembunyikan furigana awalnya */
+opacity: 0;                /* buat transparan */
+transition: opacity 0.2s;  /* efek
+halus saat muncul */
+}
+
+ruby:hover rt {
+visibility: visible; /* tampilkan saat hover */ 
+opacity: 1;          /* buat terlihat */
+}
+
+p {
+padding: 0;
+margin: 0;
+}
+</style>
+<p>とし</p>
+</div>
+</div>
+</section>
+<section class="iDevice_answer">
+<p class="iDevice_answer-field js-required">
+<label for="key0b93" class="sr-av"><a href="#answer-key0b93">Option 3</a></label><input type="radio" name="key0b9" id="key0b93" value="2" />
+</p>
+<div class="iDevice_answer-content" id="answer-key0b93">
+<div id="taoptionAnswer2q0b9" class="block iDevice_content">
+<style>
+ruby rt {
+visibility: hidden;       /* sembunyikan furigana awalnya */
+opacity: 0;                /* buat transparan */
+transition: opacity 0.2s;  /* efek
+halus saat muncul */
+}
+
+ruby:hover rt {
+visibility: visible; /* tampilkan saat hover */ 
+opacity: 1;          /* buat terlihat */
+}
+
+p {
+padding: 0;
+margin: 0;
+}
+</style>
+<p>とかい</p>
+</div>
+</div>
+</section>
+<section class="iDevice_answer">
+<p class="iDevice_answer-field js-required">
+<label for="key0b94" class="sr-av"><a href="#answer-key0b94">Option 4</a></label><input type="radio" name="key0b9" id="key0b94" value="3" />
+</p>
+<div class="iDevice_answer-content" id="answer-key0b94">
+<div id="taoptionAnswer3q0b9" class="block iDevice_content">
+<style>
+ruby rt {
+visibility: hidden;       /* sembunyikan furigana awalnya */
+opacity: 0;                /* buat transparan */
+transition: opacity 0.2s;  /* efek
+halus saat muncul */
+}
+
+ruby:hover rt {
+visibility: visible; /* tampilkan saat hover */ 
+opacity: 1;          /* buat terlihat */
+}
+
+p {
+padding: 0;
+margin: 0;
+}
+</style>
+<p>みやこかい</p>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section class="question">
+<h1 class="js-sr-av">Question</h1>
+<div id="taquestion1b9" class="block iDevice_content">
+<style>
+ruby rt {
+visibility: hidden;       /* sembunyikan furigana awalnya */
+opacity: 0;                /* buat transparan */
+transition: opacity 0.2s;  /* efek
+halus saat muncul */
+}
+
+ruby:hover rt {
+visibility: visible; /* tampilkan saat hover */ 
+opacity: 1;          /* buat terlihat */
+}
+
+p {
+padding: 0;
+margin: 0;
+}
+</style>
+<table border="0" style="width: 100%; border-style: none;">
+<tbody>
+<tr>
+<td style="width: 4.69484%;"></td>
+<td style="width: 95.3052%;">
+<p> </p>
+</td>
+</tr>
+<tr>
+<td style="width: 4.69484%;"></td>
+<td style="width: 95.3052%;">
+<p> </p>
+</td>
+</tr>
+<tr>
+<td style="width: 4.69484%;">2.</td>
+<td style="width: 95.3052%;">
+<p><ruby>いちばん</ruby><ruby>　</ruby><ruby>いい</ruby><ruby>　</ruby><ruby>もの</ruby><ruby>を</ruby><ruby>　</ruby><ruby style="margin-right: 4px; cursor: pointer;">一つ<rt style="font-size: 0.6em;">ひとつ</rt></ruby><ruby>　</ruby><ruby>えらん</ruby><ruby>で</ruby><ruby>　</ruby><ruby>ください</ruby><ruby>。</ruby></p>
+</td>
+</tr>
+<tr>
+<td style="width: 4.69484%;"></td>
+<td style="width: 95.3052%;">
+<p><ruby style="margin-right: 4px; cursor: pointer;">漢字<rt style="font-size: 0.6em;">かんじ</rt></ruby><ruby>は</ruby><ruby>　</ruby><ruby style="margin-right: 4px; cursor: pointer;">難<rt style="font-size: 0.6em;">なん</rt></ruby><ruby>し</ruby><ruby>い</ruby><ruby>です</ruby><ruby>が</ruby><ruby>、</ruby><ruby>　</ruby><ruby style="margin-right: 4px; cursor: pointer;">日本語<rt style="font-size: 0.6em;">にほんご</rt></ruby><ruby>の</ruby><ruby>　</ruby><ruby style="margin-right: 4px; cursor: pointer;">会話<rt style="font-size: 0.6em;">かいわ</rt></ruby><ruby>は</ruby><ruby>　</ruby><ruby>でき</ruby><ruby>ます</ruby><ruby>。</ruby></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<section class="iDevice_answers">
+<h1 class="js-sr-av">Answers</h1>
+<section class="iDevice_answer">
+<p class="iDevice_answer-field js-required">
+<label for="key1b91" class="sr-av"><a href="#answer-key1b91">Option 1</a></label><input type="radio" name="key1b9" id="key1b91" value="0" />
+</p>
+<div class="iDevice_answer-content" id="answer-key1b91">
+<div id="taoptionAnswer0q1b9" class="block iDevice_content">
+<style>
+ruby rt {
+visibility: hidden;       /* sembunyikan furigana awalnya */
+opacity: 0;                /* buat transparan */
+transition: opacity 0.2s;  /* efek
+halus saat muncul */
+}
+
+ruby:hover rt {
+visibility: visible; /* tampilkan saat hover */ 
+opacity: 1;          /* buat terlihat */
+}
+
+p {
+padding: 0;
+margin: 0;
+}
+</style>
+<p>かいは</p>
+</div>
+</div>
+</section>
+<section class="iDevice_answer">
+<p class="iDevice_answer-field js-required">
+<label for="key1b92" class="sr-av"><a href="#answer-key1b92">Option 2</a></label><input type="radio" name="key1b9" id="key1b92" value="1" />
+</p>
+<div class="iDevice_answer-content" id="answer-key1b92">
+<div id="taoptionAnswer1q1b9" class="block iDevice_content">
+<style>
+ruby rt {
+visibility: hidden;       /* sembunyikan furigana awalnya */
+opacity: 0;                /* buat transparan */
+transition: opacity 0.2s;  /* efek
+halus saat muncul */
+}
+
+ruby:hover rt {
+visibility: visible; /* tampilkan saat hover */ 
+opacity: 1;          /* buat terlihat */
+}
+
+p {
+padding: 0;
+margin: 0;
+}
+</style>
+<p>かいわ</p>
+</div>
+</div>
+</section>
+<section class="iDevice_answer">
+<p class="iDevice_answer-field js-required">
+<label for="key1b93" class="sr-av"><a href="#answer-key1b93">Option 3</a></label><input type="radio" name="key1b9" id="key1b93" value="2" />
+</p>
+<div class="iDevice_answer-content" id="answer-key1b93">
+<div id="taoptionAnswer2q1b9" class="block iDevice_content">
+<style>
+ruby rt {
+visibility: hidden;       /* sembunyikan furigana awalnya */
+opacity: 0;                /* buat transparan */
+transition: opacity 0.2s;  /* efek
+halus saat muncul */
+}
+
+ruby:hover rt {
+visibility: visible; /* tampilkan saat hover */ 
+opacity: 1;          /* buat terlihat */
+}
+
+p {
+padding: 0;
+margin: 0;
+}
+</style>
+<p>たいわ</p>
+</div>
+</div>
+</section>
+<section class="iDevice_answer">
+<p class="iDevice_answer-field js-required">
+<label for="key1b94" class="sr-av"><a href="#answer-key1b94">Option 4</a></label><input type="radio" name="key1b9" id="key1b94" value="3" />
+</p>
+<div class="iDevice_answer-content" id="answer-key1b94">
+<div id="taoptionAnswer3q1b9" class="block iDevice_content">
+<style>
+ruby rt {
+visibility: hidden;       /* sembunyikan furigana awalnya */
+opacity: 0;                /* buat transparan */
+transition: opacity 0.2s;  /* efek
+halus saat muncul */
+}
+
+ruby:hover rt {
+visibility: visible; /* tampilkan saat hover */ 
+opacity: 1;          /* buat terlihat */
+}
+
+p {
+padding: 0;
+margin: 0;
+}
+</style>
+<p>あいわ</p>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section class="question">
+<h1 class="js-sr-av">Question</h1>
+<div id="taquestion2b9" class="block iDevice_content">
+<style>
+ruby rt {
+visibility: hidden;       /* sembunyikan furigana awalnya */
+opacity: 0;                /* buat transparan */
+transition: opacity 0.2s;  /* efek
+halus saat muncul */
+}
+
+ruby:hover rt {
+visibility: visible; /* tampilkan saat hover */ 
+opacity: 1;          /* buat terlihat */
+}
+
+p {
+padding: 0;
+margin: 0;
+}
+</style>
+<table border="0" style="width: 100%; border-style: none;">
+<tbody>
+<tr>
+<td style="width: 4.95818%;"></td>
+<td style="width: 95.0418%;">
+<p> </p>
+</td>
+</tr>
+<tr>
+<td style="width: 4.95818%;"></td>
+<td style="width: 95.0418%;">
+<p> </p>
+</td>
+</tr>
+<tr>
+<td style="width: 4.95818%;">3.</td>
+<td style="width: 95.0418%;">
+<p><ruby>いちばん</ruby><ruby>　</ruby><ruby>いい</ruby><ruby>　</ruby><ruby>もの</ruby><ruby>を</ruby><ruby>　</ruby><ruby style="margin-right: 4px; cursor: pointer;">一つ<rt style="font-size: 0.6em;">ひとつ</rt></ruby><ruby>　</ruby><ruby>えらん</ruby><ruby>で</ruby><ruby>　</ruby><ruby>ください</ruby><ruby>。</ruby></p>
+</td>
+</tr>
+<tr>
+<td style="width: 4.95818%;"></td>
+<td style="width: 95.0418%;">
+<p><ruby style="margin-right: 4px; cursor: pointer;">試験<rt style="font-size: 0.6em;">しけん</rt></ruby><ruby>の</ruby><ruby>　</ruby><ruby style="margin-right: 4px; cursor: pointer;">会場<rt style="font-size: 0.6em;">かいじょう</rt></ruby><ruby>を</ruby><ruby>　</ruby><ruby>まちがえ</ruby><ruby>ない</ruby><ruby>よう</ruby><ruby>に</ruby><ruby>　</ruby><ruby>し</ruby><ruby>て</ruby><ruby>ください</ruby><ruby>。</ruby></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<section class="iDevice_answers">
+<h1 class="js-sr-av">Answers</h1>
+<section class="iDevice_answer">
+<p class="iDevice_answer-field js-required">
+<label for="key2b91" class="sr-av"><a href="#answer-key2b91">Option 1</a></label><input type="radio" name="key2b9" id="key2b91" value="0" />
+</p>
+<div class="iDevice_answer-content" id="answer-key2b91">
+<div id="taoptionAnswer0q2b9" class="block iDevice_content">
+<style>
+ruby rt {
+visibility: hidden;       /* sembunyikan furigana awalnya */
+opacity: 0;                /* buat transparan */
+transition: opacity 0.2s;  /* efek
+halus saat muncul */
+}
+
+ruby:hover rt {
+visibility: visible; /* tampilkan saat hover */ 
+opacity: 1;          /* buat terlihat */
+}
+
+p {
+padding: 0;
+margin: 0;
+}
+</style>
+<p>かいしょう</p>
+</div>
+</div>
+</section>
+<section class="iDevice_answer">
+<p class="iDevice_answer-field js-required">
+<label for="key2b92" class="sr-av"><a href="#answer-key2b92">Option 2</a></label><input type="radio" name="key2b9" id="key2b92" value="1" />
+</p>
+<div class="iDevice_answer-content" id="answer-key2b92">
+<div id="taoptionAnswer1q2b9" class="block iDevice_content">
+<style>
+ruby rt {
+visibility: hidden;       /* sembunyikan furigana awalnya */
+opacity: 0;                /* buat transparan */
+transition: opacity 0.2s;  /* efek
+halus saat muncul */
+}
+
+ruby:hover rt {
+visibility: visible; /* tampilkan saat hover */ 
+opacity: 1;          /* buat terlihat */
+}
+
+p {
+padding: 0;
+margin: 0;
+}
+</style>
+<p>かいば</p>
+</div>
+</div>
+</section>
+<section class="iDevice_answer">
+<p class="iDevice_answer-field js-required">
+<label for="key2b93" class="sr-av"><a href="#answer-key2b93">Option 3</a></label><input type="radio" name="key2b9" id="key2b93" value="2" />
+</p>
+<div class="iDevice_answer-content" id="answer-key2b93">
+<div id="taoptionAnswer2q2b9" class="block iDevice_content">
+<style>
+ruby rt {
+visibility: hidden;       /* sembunyikan furigana awalnya */
+opacity: 0;                /* buat transparan */
+transition: opacity 0.2s;  /* efek
+halus saat muncul */
+}
+
+ruby:hover rt {
+visibility: visible; /* tampilkan saat hover */ 
+opacity: 1;          /* buat terlihat */
+}
+
+p {
+padding: 0;
+margin: 0;
+}
+</style>
+<p>ばしょ</p>
+</div>
+</div>
+</section>
+<section class="iDevice_answer">
+<p class="iDevice_answer-field js-required">
+<label for="key2b94" class="sr-av"><a href="#answer-key2b94">Option 4</a></label><input type="radio" name="key2b9" id="key2b94" value="3" />
+</p>
+<div class="iDevice_answer-content" id="answer-key2b94">
+<div id="taoptionAnswer3q2b9" class="block iDevice_content">
+<style>
+ruby rt {
+visibility: hidden;       /* sembunyikan furigana awalnya */
+opacity: 0;                /* buat transparan */
+transition: opacity 0.2s;  /* efek
+halus saat muncul */
+}
+
+ruby:hover rt {
+visibility: visible; /* tampilkan saat hover */ 
+opacity: 1;          /* buat terlihat */
+}
+
+p {
+padding: 0;
+margin: 0;
+}
+</style>
+<style>
+ruby rt {
+visibility: hidden;       /* sembunyikan furigana awalnya */
+opacity: 0;                /* buat transparan */
+transition: opacity 0.2s;  /* efek
+halus saat muncul */
+}
+
+ruby:hover rt {
+visibility: visible; /* tampilkan saat hover */ 
+opacity: 1;          /* buat terlihat */
+}
+
+p {
+padding: 0;
+margin: 0;
+}
+</style>
+<p>かいじょう</p>
+</div>
+</div>
+</section>
+</section>
+</section>
+<div class="block iDevice_buttons">
+<p><input type="submit" name="submitB" value="SUBMIT ANSWERS" /> <span class="js-hidden js-warning">Enable JavaScript</span></p>
+</div>
+<div id="quizFormScore9"></div>
+</form>
+</div>
+</div>
+</div>
+</article>
+</section>
+<div id="packageLicense" class="cc cc-by-sa">
+<p><span>Licensed under the</span> <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution Share Alike License 4.0</a></p>
+</div>
+</div>
+<p id="made-with-eXe"><a href="https://exelearning.net/" target="_blank" rel="noopener"><span>Made with eXeLearning<span> (New Window)</span></span></a></p><script type="text/javascript" src="_style_js.js"></script></body></html>

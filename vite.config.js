@@ -20,6 +20,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/scorm-proxy/, ""), // Hapus '/scorm-proxy' dari path karena ini kata kunci untuk tentukan proxy
       },
+      "/learninghub-proxy": {
+        target: "https://files-content.learninghub.dlabsstaging.io",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/learninghub-proxy/, ""), // Hapus '/learninghub-proxy' dari path karena ini kata kunci untuk tentukan proxy
+      },
     },
   },
   resolve: {

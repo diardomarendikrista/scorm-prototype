@@ -1,4 +1,5 @@
 const SCORM_CONTENT_BASE_URL = "/scorm-proxy/scorm-content";
+const LEARNINGHUB_CONTENT_BASE_URL = "/learninghub-proxy";
 
 const data = [
   {
@@ -95,6 +96,17 @@ const data = [
     playerBehavior: "LMS_HANDLE_NAVIGATION",
     // ketika playerBehavior: "LMS_HANDLE_NAVIGATION", maka opsi dibawah ini sebaiknya ada
     quizPage: false,
+  },
+  {
+    id: "TEST_Furigana-exe",
+    title: "TEST_Furigana-exe (SCORM 1.2)",
+    description: "TEST_Furigana-exe TEST_Furigana-exe",
+    // manifestUrl:
+    //   "https://files-content.learninghub.dlabsstaging.io/zip/2d38a6f1-8879-4e1b-827e-ff7672431dd1-1770014776530/furigana-exe/imsmanifest.xml",
+    manifestUrl: `${LEARNINGHUB_CONTENT_BASE_URL}/zip/2d38a6f1-8879-4e1b-827e-ff7672431dd1-1770014776530/furigana-exe/imsmanifest.xml`,
+    playerBehavior: "LMS_HANDLE_NAVIGATION",
+    // ketika playerBehavior: "LMS_HANDLE_NAVIGATION", maka opsi dibawah ini sebaiknya ada
+    quizPage: 4,
   },
 ];
 
